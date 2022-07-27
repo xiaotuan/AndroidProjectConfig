@@ -5,6 +5,11 @@ import traceback
 class Version():
     """
     用于配置软件版本号类
+    修改文件列表如下：
+        build/make/tools/buildinfo.sh
+        索麦项目还需要修改如下文件：
+        build/make/core/build_id.mk
+        build/make/core/sysprop.mk
     """
 
     def __init__(self, settings, results, modify_files, modify_fail_files, log):
@@ -270,7 +275,7 @@ class Version():
                 elif 'ro.$(1).build.version.incremental=' in line:
                     line = '    echo "ro.$(1).build.version.incremental=' + self.settings.version_code + '" >> $(2);\\\n'
                     find_sysprop2 = True
-                file.write(line.replace('\r\n', '\n'))
+                file.write(line)
             file.flush()
             file.close()
             self.log.d(self.tag, "[modifySyspropFile] find_sysprop: " + str(find_sysprop) + ", find_sysprop2: " + str(find_sysprop2))

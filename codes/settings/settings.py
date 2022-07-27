@@ -42,7 +42,7 @@ class Settings():
 
         """配置总开关"""
         # 是否需要修改软件版本号
-        self.modify_version = True
+        self.modify_version = False
         # 是否需要修改软件通用属性（名称、型号、设备、制造商、品牌）
         self.modify_universal_property = False
         # 是否需要修改基本设置（屏幕亮度、电池百分比、WiFi默认状态、蓝牙默认状态，自动旋转、自动更新时区，默认屏幕灭屏时间）
@@ -108,8 +108,29 @@ class Settings():
         # 是否需要修改谷歌商店认证信息
         self.modify_googleplay_cert_info = False
 
-        """版本号修改内容"""
+        """
+        版本号修改内容 
+        控制开关: self.modify_version
+
+        """
         # 软件版本号：ML_SO0N_M10_4G_T3.GOV.V4_`date +%Y%m%d`
         self.version = "ML_SO0N_M10_4G_T3.GOV.V5_`date +%Y%m%d`"
         # 针对索麦 134 项目
         self.version_code = '5'
+
+        """
+        通用属性修改内容
+        控制开关: self.modify_universal_property
+        如果某个参数不需要设置，可以将其值设置为："not set", 例如：
+        self.name = "not set"
+        """
+        # 修改名称，ro.product.name 的值
+        self.name = "X8"
+        # 修改设备品牌名称，ro.product.brand 的值
+        self.brand = "Sky"
+        # 修改设备名称，ro.product.device 的值
+        self.device = "X8"
+        # 修改设备制造商, ro.product.manufacturer 的值
+        self.manufacturer = "Sky Devices"
+        # 修改设备型号，ro.product.model 的值
+        self.model = "X8"

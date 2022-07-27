@@ -3,6 +3,7 @@ import time
 
 from codes.settings.settings import Settings
 from codes.log.log import Log
+from codes.universal_property import UniversalProperty
 from codes.version import Version
 
 tag = 'Main'
@@ -31,6 +32,8 @@ settings = Settings()
 
 # 修改软件版本号对象
 version = Version(settings, results, modify_files, modify_fail_files, log)
+# 修改通用属性对象
+universalProperty = UniversalProperty(settings, results, modify_files, modify_fail_files, log)
 
 # 打印工程配置信息
 log.i(tag, "==============================================================")
@@ -50,12 +53,16 @@ log.i(tag, "==============================================================")
 
 # 修改软件版本号
 version.exec()
+# 修改通用属性
+universalProperty.exec()
 
 # 输出修改文件列表
 log.i(tag, "")
 log.i(tag, "======================= Modify files =========================")
 for item in modify_files:
     log.i(tag, item)
+if len(modify_files) == 0:
+    log.i(tag, "")
 log.i(tag, "==============================================================")
 
 # 输出修改文件列表
@@ -63,6 +70,8 @@ log.i(tag, "")
 log.i(tag, "===================== Modify fail files ======================")
 for item in modify_fail_files:
     log.i(tag, item)
+if len(modify_fail_files) == 0:
+    log.i(tag, "")
 log.i(tag, "==============================================================")
 
 # 输出执行结果
