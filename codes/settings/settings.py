@@ -12,9 +12,9 @@ class Settings():
         
         """工程路径配置"""
         # 工程根目录路径
-        self.project_path = "/home/qintuanye/work02/mtk/12/8766/A/mt8766_s/"
+        self.project_path = "/home/qintuanye/work02/mtk/12/8766/A/mt8766_s"
         # 工程客制化目录路径
-        self.custom_folder_path = "/home/qintuanye/work02/mtk/12/8766/A/mt8766_s/weibu/"
+        self.custom_folder_path = "/home/qintuanye/work02/mtk/12/8766/A/mt8766_s/weibu"
 
         """Android信息配置"""
         # Android 版本号
