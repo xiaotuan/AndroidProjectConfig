@@ -22,6 +22,7 @@ class Version():
         self.total = 1
         if self.settings.task_number == '134':
             self.total = 3
+        self.log.d(self.tag, "[init] task_number: " + self.settings.task_number + ", total: " + str(self.total))
         if self.settings.modify_version:
             self.results['Version'] = {
                 'Total': self.total,
@@ -44,11 +45,14 @@ class Version():
                 self.modifyAndoird11Version()
             elif self.settings.android_version == '12':
                 self.modifyAndroid12Version()
+            else:
+                raise Exception("不支持 Android " + self.settings.android_version + " 版本的版本号修改！！！")
+        else:
+            self.log.i(self.tag, "[exec] Set version is disabled.")
 
     
     def modifyAndoird11Version(self):
         """修改 Android 11 的版本号"""
-        self.log.e(self.tag, "[modifyAndoird11Version] 暂未实现该功能...")
         raise Exception("修改 Android 11 版本号功能未实现！！！")
 
 
@@ -81,7 +85,7 @@ class Version():
             else:
                 self.modify_fail_files.append(self.getCustomSyspropFilePath())
         else:
-            if self.modifyBuildIdFile():
+            if self.modifyBuildInfoFile():
                 self.results['Version']['Pass'] += 1
                 self.results['Version']['Fail'] -= 1
                 self.modify_files.append(self.getCustomBuildInfoFilePath())

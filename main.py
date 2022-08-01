@@ -5,6 +5,7 @@ from codes.settings.settings import Settings
 from codes.log.log import Log
 from codes.universal_property import UniversalProperty
 from codes.version import Version
+from codes.base_settings import BaseSettings
 
 tag = 'Main'
 log = Log()
@@ -34,6 +35,8 @@ settings = Settings()
 version = Version(settings, results, modify_files, modify_fail_files, log)
 # 修改通用属性对象
 universalProperty = UniversalProperty(settings, results, modify_files, modify_fail_files, log)
+# 修改基本设置对象
+baseSettings = BaseSettings(settings, results, modify_files, modify_fail_files, log)
 
 # 打印工程配置信息
 log.i(tag, "==============================================================")
@@ -51,10 +54,14 @@ log.i(tag, "Custom Folder Name: " + settings.custon_directory_name)
 log.i(tag, "Task Number: " + settings.task_number)
 log.i(tag, "==============================================================")
 
+
 # 修改软件版本号
 version.exec()
 # 修改通用属性
 universalProperty.exec()
+# 修改基本设置
+baseSettings.exec()
+
 
 # 输出修改文件列表
 log.i(tag, "")

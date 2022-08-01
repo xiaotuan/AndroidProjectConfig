@@ -134,3 +134,28 @@ class Settings():
         self.manufacturer = "Sky Devices"
         # 修改设备型号，ro.product.model 的值
         self.model = "X8"
+
+        """
+        基本设置修改（屏幕亮度、电池百分比、WiFi默认状态、蓝牙默认状态，自动旋转、自动更新时区，默认屏幕灭屏时间, 定位状态, 24 小时制时间）
+        控制开关：modify_base_settings
+        如果某个参数不需要设置，可以将其值设置为："not set", 例如：
+        self.screen_brightness = "not set"
+        """
+        # 设置屏幕默认亮度
+        self.screen_brightness = '0.3456'
+        # 是否显示电池百分比，值为 1 -> 显示，0 -> 不显示
+        self.show_battery_percent = '1'
+        # WiFi 是否默认打开，值为 true -> 默认打开，false -> 默认关闭
+        self.wifi_on = 'false'
+        # 蓝牙是否默认打开
+        self.bluetooth_on = 'false'
+        # 是否打开屏幕自动旋转功能，值为
+        self.auto_rotation = 'false'
+        # 是否自动更新时区，值为 true -> 自动更新时区，false -> 关闭自动更新时区
+        self.auto_time_zone = 'true'
+        # 设置屏幕灭屏时间，值为 -1 -> 永久，正整数 -> 毫秒值
+        self.screen_sleep_timeout = "-1"
+        # 是否默认开启定位，值为 0 -> 关闭，3 -> 打开
+        self.location_on = '0'
+        # 是否默认 24 小时制，值为 12 -> 12 小时制，24 -> 24 小时制
+        self.time_24 = '12'

@@ -40,20 +40,40 @@ class UniversalProperty():
         执行修改通用属性
         """
         if self.settings.modify_universal_property and self.total > 0:
-            result = self.modifyProjectVndFile()
-            for key, value in result.items():
-                if value:
-                    self.results['UniversalProperty']['Pass'] += 1
-                    self.results['UniversalProperty']['Fail'] -= 1
-                    if self.getCustomProjectVndFilePath() not in self.modify_files:
-                        self.modify_files.append(self.getCustomProjectVndFilePath())
-                else:
-                    if self.getCustomProjectVndFilePath() not in self.modify_fail_files:
-                        self.modify_files.append(self.getCustomProjectVndFilePath())
+            if self.settings.android_version == '11':
+                self.modifyAndroid11UniversalProperty()
+            elif self.settings.android_version == '12':
+                self.modifyAndroid12UniversalProperty()
+            else:
+                raise Exception("不支持 Android " + self.settings.android_version + " 版本的通用设置修改！！！")
         else:
-            self.log.i(self.tag, "[exec] No parameters to set or disabled to set.")
+            self.log.i(self.tag, "[exec] Set universal property is disabled.")
 
+
+    def modifyAndroid11UniversalProperty(self):
+        """
+        修改 Android 11 的通用属性
+        """
+        raise Exception("修改 Android 11 通用属性功能未实现！！！")
+
+
+    def modifyAndroid12UniversalProperty(self):
+        """
+        修改 Android 12 的通用属性
+        """
+        result = self.modifyProjectVndFile()
+        for key, value in result.items():
+            if value:
+                self.results['UniversalProperty']['Pass'] += 1
+                self.results['UniversalProperty']['Fail'] -= 1
+                if self.getCustomProjectVndFilePath() not in self.modify_files:
+                    self.modify_files.append(self.getCustomProjectVndFilePath())
+            else:
+                self.log.e(self.tag, "[UniversalProperty] modifiy " + key + " failed.")
+                if self.getCustomProjectVndFilePath() not in self.modify_fail_files:
+                    self.modify_files.append(self.getCustomProjectVndFilePath())
     
+
     def modifyProjectVndFile(self):
         """
         修改 vnd_$(self.public_version_name).mk 文件
@@ -69,13 +89,7 @@ class UniversalProperty():
         self.log.d(self.tag, "[modifyProjectVndFile] vnd file path: " + file_path)
         self.log.d(self.tag, "[modifyProjectVndFile] custom vnd file path: " + custom_file_path)
         # 返回结果，下标 0 -> name, 1 -> brand, 2 -> device, 3 -> model, 4 -> manufacturer
-        result = {
-            "name": False,
-            "brand": False,
-            "device": False,
-            "model": False,
-            "manufacturer": False
-        }
+        result = {}
 
         try:
             # 如果客制化目录不存在则创建该目录
@@ -84,7 +98,7 @@ class UniversalProperty():
 
             # 如果创建客制化目录失败，则返回 False
             if not os.path.exists(os.path.dirname(custom_file_path)):
-                return False
+                return result
 
             # 如果客制化文件不存在，则拷贝文件
             if not os.path.exists(custom_file_path):
@@ -92,7 +106,7 @@ class UniversalProperty():
 
             # 如果拷贝客制化目录失败, 则返回 False
             if not os.path.exists(custom_file_path):
-                return False
+                return result
 
             # 读取 vnd_$(self.public_version_name).mk 文件内容
             file = open(custom_file_path)
