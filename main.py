@@ -6,6 +6,7 @@ from codes.log.log import Log
 from codes.universal_property import UniversalProperty
 from codes.version import Version
 from codes.base_settings import BaseSettings
+from codes.fingerprint import FingerPrint
 
 tag = 'Main'
 log = Log()
@@ -37,6 +38,8 @@ version = Version(settings, results, modify_files, modify_fail_files, log)
 universalProperty = UniversalProperty(settings, results, modify_files, modify_fail_files, log)
 # 修改基本设置对象
 baseSettings = BaseSettings(settings, results, modify_files, modify_fail_files, log)
+# 修改 fingerprint 对象
+fingerprint = FingerPrint(settings, results, modify_files, modify_fail_files, log)
 
 # 打印工程配置信息
 log.i(tag, "==============================================================")
@@ -61,6 +64,8 @@ version.exec()
 universalProperty.exec()
 # 修改基本设置
 baseSettings.exec()
+# 执行修改 fingerprint
+fingerprint.exec()
 
 
 # 输出修改文件列表
@@ -87,7 +92,7 @@ log.i(tag, "========================== Result ============================")
 for key, value in results.items():
     if exec_result and value['Fail'] != 0:
         exec_result = False
-    log.i(tag, key + ": Total " + str(value['Total']) + ", Pass " + str(value['Pass']) + ", Fail " + str(value['Fail']))
+    log.i(tag, "%20s: Total %2d, Pass %2d, Fail %2d" % (key, value['Total'], value['Pass'], value['Fail']))
 log.i(tag, "==============================================================")
 
 diff_time = int(time.time() - start_time)

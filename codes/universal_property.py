@@ -28,11 +28,12 @@ class UniversalProperty():
                 self.total += 1
             if self.settings.device != 'not set':
                 self.total += 1
-            self.results['UniversalProperty'] = {
-                'Total': self.total,
-                'Pass' : 0,
-                'Fail' : self.total
-            }
+
+        self.results['UniversalProperty'] = {
+            'Total': self.total,
+            'Pass' : 0,
+            'Fail' : self.total
+        }
 
 
     def exec(self):
@@ -45,16 +46,16 @@ class UniversalProperty():
             elif self.settings.android_version == '12':
                 self.modifyAndroid12UniversalProperty()
             else:
-                raise Exception("不支持 Android " + self.settings.android_version + " 版本的通用设置修改！！！")
+                raise Exception("Unsupport modify Android " + self.settings.android_version + " base settings.")
         else:
-            self.log.i(self.tag, "[exec] Set universal property is disabled.")
+            self.log.i(self.tag, "[exec] Set universal property is disabled or no need to modify.")
 
 
     def modifyAndroid11UniversalProperty(self):
         """
         修改 Android 11 的通用属性
         """
-        raise Exception("修改 Android 11 通用属性功能未实现！！！")
+        raise Exception("Unsupport modify Android 11 base settings.")
 
 
     def modifyAndroid12UniversalProperty(self):
@@ -62,16 +63,18 @@ class UniversalProperty():
         修改 Android 12 的通用属性
         """
         result = self.modifyProjectVndFile()
-        for key, value in result.items():
+        self.log.d(self.tag, "[modifyAndroid12UniversalProperty] Modify Vnd file result: " + str(result))
+        isSuccess = True
+        for value in result.values():
             if value:
                 self.results['UniversalProperty']['Pass'] += 1
                 self.results['UniversalProperty']['Fail'] -= 1
-                if self.getCustomProjectVndFilePath() not in self.modify_files:
-                    self.modify_files.append(self.getCustomProjectVndFilePath())
             else:
-                self.log.e(self.tag, "[UniversalProperty] modifiy " + key + " failed.")
-                if self.getCustomProjectVndFilePath() not in self.modify_fail_files:
-                    self.modify_files.append(self.getCustomProjectVndFilePath())
+                isSuccess = False
+        if isSuccess:
+            self.modify_files.append(self.getCustomProjectVndFilePath())
+        else:
+            self.modify_files.append(self.getCustomProjectVndFilePath())
     
 
     def modifyProjectVndFile(self):
@@ -90,6 +93,20 @@ class UniversalProperty():
         self.log.d(self.tag, "[modifyProjectVndFile] custom vnd file path: " + custom_file_path)
         # 返回结果，下标 0 -> name, 1 -> brand, 2 -> device, 3 -> model, 4 -> manufacturer
         result = {}
+        if self.settings.name != 'not set':
+            result['Name'] = False
+        if self.settings.brand != 'not set':
+            result['Brand'] = False
+        if self.settings.model != 'not set':
+            result['Model'] = False
+        if self.settings.manufacturer != 'not set':
+            result['Manufacturer'] = False
+        if self.settings.device != 'not set':
+            result['Device'] = False
+
+        if len(result) == 0:
+            self.log.w(self.tag, "[modifyProjectVndFile] No need to modify.")
+            return result
 
         try:
             # 如果客制化目录不存在则创建该目录
@@ -98,6 +115,7 @@ class UniversalProperty():
 
             # 如果创建客制化目录失败，则返回 False
             if not os.path.exists(os.path.dirname(custom_file_path)):
+                self.log.e(self.tag, "[modifyProjectVndFile] Create vnd file parent directory failed.")
                 return result
 
             # 如果客制化文件不存在，则拷贝文件
@@ -106,6 +124,7 @@ class UniversalProperty():
 
             # 如果拷贝客制化目录失败, 则返回 False
             if not os.path.exists(custom_file_path):
+                self.log.e(self.tag, "[modifyProjectVndFile] Copy vnd file failed.")
                 return result
 
             # 读取 vnd_$(self.public_version_name).mk 文件内容
@@ -127,42 +146,43 @@ class UniversalProperty():
                 if 'PRODUCT_MANUFACTURER :=' in line:
                     if self.settings.manufacturer != 'not set':
                         line = 'PRODUCT_MANUFACTURER := ' + self.settings.manufacturer + '\n'
-                        result['manufacturer'] = True
+                        result['Manufacturer'] = True
                 elif 'PRODUCT_MODEL :=' in line:
                     if self.settings.model != 'not set':
                         line = 'PRODUCT_MODEL := ' + self.settings.model + '\n'
-                        result['model'] = True
+                        result['Model'] = True
                 elif 'PRODUCT_BRAND :=' in line:
                     if self.settings.brand != 'not set':
                         line = 'PRODUCT_BRAND := ' + self.settings.brand + '\n'
-                        result['brand'] = True
+                        result['Brand'] = True
                     
                     if not hasSystemName or not hasSystemDevice:
                         line += '\n'
                         if not hasSystemName and self.settings.name != 'not set':
                             line += 'PRODUCT_SYSTEM_NAME := ' + self.settings.name + '\n'
-                            result['name'] = True
+                            result['Name'] = True
                         if not hasSystemDevice and self.settings.device != 'not set':
                             line += 'PRODUCT_SYSTEM_DEVICE := ' + self.settings.device + '\n'
-                            result['device'] = True
+                            result['Device'] = True
                         line += '\n'
 
                 elif 'PRODUCT_SYSTEM_NAME :=' in line:
                     if self.settings.name != 'not set':
                         line = 'PRODUCT_SYSTEM_NAME := ' + self.settings.name + '\n'
-                        result['name'] = True
+                        result['Name'] = True
                 elif 'PRODUCT_SYSTEM_DEVICE :=' in line:
                     if self.settings.device != 'not set':
                         line = 'PRODUCT_SYSTEM_DEVICE := ' + self.settings.device + '\n'
-                        result['device'] = True
+                        result['Device'] = True
 
                 file.write(line)
             file.flush()
             file.close()
-            self.log.d(self.tag, "[modifyProjectVndFile] result: " + str(result))
             return result
         except Exception as e:
             self.log.d(self.tag, "[modifyProjectVndFile] error: " + traceback.format_exc())
+            if os.path.exists(self.getCustomProjectVndFilePath()):
+                os.remove(self.getCustomProjectVndFilePath())
             return result
 
 

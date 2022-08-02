@@ -64,62 +64,65 @@ class BaseSettings():
         """
         执行修改基本设置
         """
-        if self.settings.modify_base_settings:
+        if self.settings.modify_base_settings and self.total > 0:
             if self.settings.android_version == '11':
                 self.modifyAndroid11BaseSettings()
             elif self.settings.android_version == '12':
                 self.modifyAndroid12BaseSettings()
             else:
-                raise Exception("不支持 Android " + self.settings.android_version + " 版本基本设置的修改！！！")
+                raise Exception("Unsupport modify Android " + self.settings.android_version + " base settings.")
         else:
-            self.log.i(self.tag, "[exec] Set base settings is disabled.")
+            self.log.i(self.tag, "[exec] Set base settings is disabled or no need to modify.")
 
 
     def modifyAndroid11BaseSettings(self):
         """修改 Android 11 的基本设置"""
-        raise Exception("不支持 Android " + self.settings.android_version + " 版本的通用设置修改！！！")
+        raise Exception("Unsupport modify Android 11 base settings.")
 
 
     def modifyAndroid12BaseSettings(self):
         """修改 Android 12 的基本设置"""
-        if self.total > 0:
-            defaultXmlResults = self.modifyDefaultsXmlFile()
-            self.log.d(self.tag, "[modifyAndroid12BaseSettings] modify default.xml result: " + str(defaultXmlResults))
-            for value in defaultXmlResults.values():
-                if value:
-                    self.results['BaseSettings']['Pass'] += 1
-                    self.results['BaseSettings']['Fail'] -= 1
-                    if self.getCustomDefaultsXmlFilePath() not in self.modify_files:
-                        self.modify_files.append(self.getCustomDefaultsXmlFilePath())
-                else:
-                    if self.getCustomDefaultsXmlFilePath() not in self.modify_fail_files:
-                        self.modify_files.append(self.getCustomDefaultsXmlFilePath())
-
-            databaseResults = self.modifyDatabaseHelperFile()
-            self.log.d(self.tag, "[modifyAndroid12BaseSettings] modify DatabaseHelper.java result: " + str(databaseResults))
-            for value in databaseResults.values():
-                if value:
-                    self.results['BaseSettings']['Pass'] += 1
-                    self.results['BaseSettings']['Fail'] -= 1
-                    if self.getCustomDatabaseHelperFilePath() not in self.modify_files:
-                        self.modify_files.append(self.getCustomDatabaseHelperFilePath())
-                else:
-                    if self.getCustomDatabaseHelperFilePath() not in self.modify_fail_files:
-                        self.modify_files.append(self.getCustomDatabaseHelperFilePath())
-
-            amsResults = self.modifyAMSFile()
-            self.log.d(self.tag, "[modifyAndroid12BaseSettings] modify ActivityManagerService.java result: " + str(amsResults))
-            for value in amsResults.values():
-                if value:
-                    self.results['BaseSettings']['Pass'] += 1
-                    self.results['BaseSettings']['Fail'] -= 1
-                    if self.getCustomAMSFilePath() not in self.modify_files:
-                        self.modify_files.append(self.getCustomAMSFilePath())
-                else:
-                    if self.getCustomAMSFilePath() not in self.modify_fail_files:
-                        self.modify_files.append(self.getCustomAMSFilePath())
+        defaultXmlResults = self.modifyDefaultsXmlFile()
+        self.log.d(self.tag, "[modifyAndroid12BaseSettings] modify default.xml result: " + str(defaultXmlResults))
+        isSuccess = True
+        for value in defaultXmlResults.values():
+            if value:
+                self.results['BaseSettings']['Pass'] += 1
+                self.results['BaseSettings']['Fail'] -= 1
+            else:
+                isSuccess = False
+        if isSuccess:
+            self.modify_files.append(self.getCustomDefaultsXmlFilePath())
         else:
-            self.log.i(self.tag, "[modifyAndroid12BaseSettings] no modification required.")
+            self.modify_files.append(self.getCustomDefaultsXmlFilePath())
+
+        databaseResults = self.modifyDatabaseHelperFile()
+        self.log.d(self.tag, "[modifyAndroid12BaseSettings] modify DatabaseHelper.java result: " + str(databaseResults))
+        isSuccess = True
+        for value in databaseResults.values():
+            if value:
+                self.results['BaseSettings']['Pass'] += 1
+                self.results['BaseSettings']['Fail'] -= 1
+            else:
+                isSuccess = False
+        if isSuccess:
+            self.modify_files.append(self.getCustomDatabaseHelperFilePath())
+        else:
+            self.modify_files.append(self.getCustomDatabaseHelperFilePath())
+
+        amsResults = self.modifyAMSFile()
+        self.log.d(self.tag, "[modifyAndroid12BaseSettings] modify ActivityManagerService.java result: " + str(amsResults))
+        isSuccess = True
+        for value in amsResults.values():
+            if value:
+                self.results['BaseSettings']['Pass'] += 1
+                self.results['BaseSettings']['Fail'] -= 1
+            else:
+                isSuccess = False
+        if isSuccess:
+            self.modify_files.append(self.getCustomAMSFilePath())
+        else:
+            self.modify_files.append(self.getCustomAMSFilePath())
 
 
     def modifyDefaultsXmlFile(self):
@@ -141,6 +144,26 @@ class BaseSettings():
         self.log.d(self.tag, "[modifyDefaultsXmlFile] custom defaults.xml file path: " + custom_file_path)
         # 返回结果，下标 0 -> name, 1 -> brand, 2 -> device, 3 -> model, 4 -> manufacturer
         result = {}
+        if self.settings.screen_brightness != 'not set':
+            result['ScreenBrightness'] = False
+        if self.settings.wifi_on != 'not set':
+            result['Wifi'] = False
+        if self.settings.bluetooth_on != 'not set':
+            result['Bluetooth'] = False
+        if self.settings.auto_rotation != 'not set':
+            result['AutoRotation'] = False
+        if self.settings.auto_time_zone != 'not set':
+            result['AutoTimeZone'] = False
+        if self.settings.screen_sleep_timeout != 'not set':
+            result['SleepTimeout'] = False
+        if self.settings.location_on != 'not set':
+            result['Location'] = False
+        if self.settings.time_24 != 'not set':
+            result['Time1224'] = False
+
+        if len(result) == 0:
+            self.log.w(self.tag, "[modifyDefaultsXmlFile] No need to modify.")
+            return result
 
         try:
             # 如果客制化目录不存在则创建该目录
@@ -149,6 +172,7 @@ class BaseSettings():
 
             # 如果创建客制化目录失败，则返回 False
             if not os.path.exists(os.path.dirname(custom_file_path)):
+                self.log.e(self.tag, "[modifyDefaultsXmlFile] Create defaults.xml file parent directory failed.")
                 return result
 
             # 如果客制化文件不存在，则拷贝文件
@@ -157,6 +181,7 @@ class BaseSettings():
 
             # 如果拷贝客制化目录失败, 则返回 False
             if not os.path.exists(custom_file_path):
+                self.log.e(self.tag, "[modifyDefaultsXmlFile] Copy defaults.xml file failed.")
                 return result
 
             # 读取 vnd_$(self.public_version_name).mk 文件内容
@@ -171,7 +196,7 @@ class BaseSettings():
                     # 修改屏幕休眠时间
                     if self.settings.screen_sleep_timeout != 'not set':
                         line = '    <integer name="def_screen_off_timeout">' + self.settings.screen_sleep_timeout + '</integer>\n'
-                        result['ScreenOffTimeout'] = True
+                        result['SleepTimeout'] = True
                 elif '<bool name="def_auto_time_zone">' in line:
                     # 修改自动更新时区
                     if self.settings.auto_time_zone != 'not set':
@@ -197,7 +222,7 @@ class BaseSettings():
                     # 修改 WiFi 默认状态
                     if self.settings.wifi_on != 'not set':
                         line = '    <bool name="def_wifi_on">' + self.settings.wifi_on + '</bool>\n'
-                        result['WifiOn'] = True
+                        result['Wifi'] = True
                 elif '<string name="def_time_12_24" translatable="false">' in line:
                     # 修改时间是12小时制还是24小时制
                     if self.settings.time_24 != 'not set':
@@ -217,11 +242,13 @@ class BaseSettings():
                 file.write(line)
             file.flush()
             file.close()
-            self.log.d(self.tag, "[modifyDefaultsXmlFile] result: " + str(result))
             return result
         except Exception as e:
             self.log.d(self.tag, "[modifyDefaultsXmlFile] error: " + traceback.format_exc())
+            if os.path.exists(self.getCustomDefaultsXmlFilePath()):
+                os.remove(self.getCustomDefaultsXmlFilePath())
             return result
+
 
     def modifyDatabaseHelperFile(self):
         """
@@ -236,6 +263,13 @@ class BaseSettings():
         self.log.d(self.tag, "[modifyDatabaseHelperFile] DatabaseHelper.java file path: " + file_path)
         self.log.d(self.tag, "[modifyDatabaseHelperFile] custom DatabaseHelper.java file path: " + custom_file_path)
         result = {}
+
+        if self.settings.show_battery_percent != 'not set':
+            result['BatteryPercent'] = False
+
+        if len(result) == 0:
+            self.log.w(self.tag, "[modifyDatabaseHelperFile] No need to modify.")
+            return result
 
         try:
             # 如果客制化目录不存在则创建该目录
@@ -323,7 +357,11 @@ class BaseSettings():
         self.log.d(self.tag, "[modifyAMSFile] custom ActivityManagerService.java file path: " + custom_file_path)
         result = {}
 
-        if not self.settings.gms and self.settings.wifi_on != 'false':
+        if self.settings.gms and self.settings.wifi_on == 'false':
+            result['Wifi'] = False
+
+        if len(result) == 0:
+            self.log.w(self.tag, "[modifyAMSFile] No need to modify.")
             return result
 
         try:
@@ -380,7 +418,7 @@ class BaseSettings():
                             code += '            }\n'
                             code += '        }\n\n'
                             line = code + line
-                            result['WifiOn'] = True
+                            result['Wifi'] = True
 
                 file.write(line)
             file.flush()

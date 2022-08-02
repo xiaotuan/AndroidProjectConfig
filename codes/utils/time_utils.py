@@ -18,3 +18,10 @@ def get_log_file_time():
     data_head = time.strftime("%Y%m%d%H%M%S", local_time)
     data_secs = (ct - int(ct)) * 1000
     return "%s%03d" % (data_head, data_secs)
+
+
+def get_build_number():
+    """
+    获取时间戳作为 fingerpring 修改中的 build_number 的值
+    """
+    return str(int(time.time()))

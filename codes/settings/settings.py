@@ -111,7 +111,8 @@ class Settings():
         """
         版本号修改内容 
         控制开关: self.modify_version
-
+        如果某个参数不需要设置，可以将其值设置为："not set", 例如：
+        self.version = "not set"
         """
         # 软件版本号：ML_SO0N_M10_4G_T3.GOV.V4_`date +%Y%m%d`
         self.version = "ML_SO0N_M10_4G_T3.GOV.V5_`date +%Y%m%d`"
@@ -159,3 +160,10 @@ class Settings():
         self.location_on = '0'
         # 是否默认 24 小时制，值为 12 -> 12 小时制，24 -> 24 小时制
         self.time_24 = '12'
+
+        """
+        修改 fingerprint
+        控制开关：modify_fingerprint
+        """
+        # 值为 数字、"not set" -> 不设置，"now" -> 使用当前时间值
+        self.build_number = 'now'
