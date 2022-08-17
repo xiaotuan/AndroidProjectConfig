@@ -1,108 +1,91 @@
-import platform
-import time
+from tkinter import *
+from tkinter import messagebox
+from tkinter.ttk import *
 
-from codes.settings.settings import Settings
-from codes.log.log import Log
-from codes.universal_property import UniversalProperty
-from codes.version import Version
-from codes.base_settings import BaseSettings
-from codes.fingerprint import FingerPrint
+from log import Log
+from project_info import ProjectInfo
+from project_info_config import ProjectInfoConfig
 
-tag = 'Main'
-log = Log()
-start_time = time.time()
+class MainWindow(object):
+    """
+    应用程序主界面
+    """
 
-if __name__ != '__main__':
-    # 脚本被当做文件运行
-    log.e(tag, "脚本不是以文件方式执行，退出程序!!!\n")
-    exit(-1)
+    def __init__(self, width, height):
+        self.tag = "MainWindow"
 
-if platform.system() != 'Linux':
-    log.e(tag, "脚本必须运行在 Linux 系统下!!!\n")
-    exit(-2)
+        self.screenWidth = width
+        self.screenHeight = height
 
-# 执行结果
-exec_result = True
-# 保存修改文件数组
-modify_files = []
-# 修改失败文件数组
-modify_fail_files = []
-# 保存测试结果字典
-results = {}
-# 配置对象
-settings = Settings()
+        self.log = Log()
 
-# 修改软件版本号对象
-version = Version(settings, results, modify_files, modify_fail_files, log)
-# 修改通用属性对象
-universalProperty = UniversalProperty(settings, results, modify_files, modify_fail_files, log)
-# 修改基本设置对象
-baseSettings = BaseSettings(settings, results, modify_files, modify_fail_files, log)
-# 修改 fingerprint 对象
-fingerprint = FingerPrint(settings, results, modify_files, modify_fail_files, log)
+        # 配置信息类
+        self.projectInfoConfig = ProjectInfoConfig(self.log)
 
-# 打印工程配置信息
-log.i(tag, "==============================================================")
-log.i(tag, "Project Path: " + settings.project_path)
-log.i(tag, "Custom Folder Path: " + settings.custom_folder_path)
-log.i(tag, "Android Version: " + settings.android_version)
-log.i(tag, "Platform: " + settings.platform)
-log.i(tag, "Chip: " + settings.chip)
-log.i(tag, "GMS: " + str(settings.gms))
-log.i(tag, "GMS GO: " + str(settings.gms_go))
-log.i(tag, "GMS 2G GO: " + str(settings.gms_2g_go))
-log.i(tag, "Public Version Name: " + settings.public_version_name)
-log.i(tag, "Drive Folder Name: " + settings.drive_directory_name)
-log.i(tag, "Custom Folder Name: " + settings.custon_directory_name)
-log.i(tag, "Task Number: " + settings.task_number)
-log.i(tag, "==============================================================")
+        self.root = Tk()
+        self.root.title("Android 工程配置")
+        self.root.geometry("%dx%d" % (self.screenWidth, self.screenHeight))
+
+        # 选项卡容器
+        self.noteBook = Notebook(self.root)
+        
+        # 工程配置设置界面
+        self.project = Frame(self.noteBook)
+        # 版本号设置界面
+        self.version = Frame(self.noteBook)
+
+        # 工程配置设置界面处理对象
+        self.projectInfo = ProjectInfo(self.project, self.projectInfoConfig, self.log)
+
+        # 设置界面添加到选项卡中
+        self.noteBook.add(self.project, text="工程信息")
+        self.noteBook.add(self.version, text="版本号")
+
+        # 绑定窗口配置改变事件
+        self.root.bind("<Configure>", self.window_configure_change)
+        # 绑定控件显示状态改变事件
+        self.noteBook.bind("<Visibility>", self.notebook_visibility)
+
+        # 显示选项卡
+        self.noteBook.pack(padx=10, pady=10, fill=BOTH, expand=TRUE)
 
 
-# 修改软件版本号
-version.exec()
-# 修改通用属性
-universalProperty.exec()
-# 修改基本设置
-baseSettings.exec()
-# 执行修改 fingerprint
-fingerprint.exec()
+    def window_configure_change(self, event=None):
+        """
+        窗口配置改变回调方法
+        """
+        if event is not None:
+            if self.screenWidth != self.root.winfo_width() or self.screenHeight != self.root.winfo_height():
+                self.screenWidth = self.root.winfo_width()
+                self.screenHeight = self.root.winfo_height()
+                self.log.d(self.tag, "[window_configure_change] Screen width: "
+                    + str(self.screenWidth) + ", height: " + str(self.screenHeight))
+                self.layoutWindow()
 
 
-# 输出修改文件列表
-log.i(tag, "")
-log.i(tag, "======================= Modify files =========================")
-for item in modify_files:
-    log.i(tag, item)
-if len(modify_files) == 0:
-    log.i(tag, "")
-log.i(tag, "==============================================================")
+    def layoutWindow(self):
+        """
+        布局窗口
+        """
+        self.projectInfo.layout(self.noteBook.winfo_width(), self.noteBook.winfo_height())
 
-# 输出修改文件列表
-log.i(tag, "")
-log.i(tag, "===================== Modify fail files ======================")
-for item in modify_fail_files:
-    log.i(tag, item)
-if len(modify_fail_files) == 0:
-    log.i(tag, "")
-log.i(tag, "==============================================================")
+    
+    def notebook_visibility(self, event=None):
+        """
+        Notebook 显示状态回调
+        """
+        if event is not None:
+            print(event)
+            self.log.d(self.tag, "[notebook_visibility] width: "
+                + str(self.noteBook.winfo_width())
+                + ", height: " + str(self.noteBook.winfo_height()))
+            if event.state == 'VisibilityUnobscured':
+                self.layoutWindow()
 
-# 输出执行结果
-log.i(tag, "")
-log.i(tag, "========================== Result ============================")
-for key, value in results.items():
-    if exec_result and value['Fail'] != 0:
-        exec_result = False
-    log.i(tag, "%20s: Total %2d, Pass %2d, Fail %2d" % (key, value['Total'], value['Pass'], value['Fail']))
-log.i(tag, "==============================================================")
 
-diff_time = int(time.time() - start_time)
-hour = diff_time / (60 * 60)
-minute = (diff_time - diff_time % (60 * 60)) / 60
-second = diff_time % 60
-use_time = str(int(hour)) + " hour " + str(int(minute)) + " minute " + str(second) + " second"
-log.i(tag, "")
-if exec_result:
-    log.i(tag, "Exec success, use time: " + use_time)
-else:
-    log.i(tag, "Exec fail, use time: " + use_time)
-log.i(tag, "")
+def main():
+    window = MainWindow(width=900, height=640)
+    mainloop()
+
+if __name__ == '__main__':
+    main()

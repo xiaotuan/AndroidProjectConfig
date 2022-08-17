@@ -24,7 +24,7 @@ class Settings():
         # 芯片类型，mtk：8766、8168，unisoc: 未实现
         self.chip = '8766'
         # 是否是 GMS 项目
-        self.gms = False
+        self.gms = True
         # 是否是 2G GO 项目
         self.gms_2g_go = False
         # 是否是 GO 项目
@@ -34,22 +34,22 @@ class Settings():
         # 公版目录名称
         self.public_version_name = "tb8768p1_64_bsp"
         # 项目驱动客制化目录名称
-        self.drive_directory_name = "M960YC_SM_159"
+        self.drive_directory_name = "M960YC_SM_308"
         # 项目客制化目录名称
-        self.custon_directory_name = "M960YC_SM_159-M10_4G_T3-MMI"
+        self.custon_directory_name = "M960YC_SM_308-MMI"
         # 项目任务号，禅道上的任务号
-        self.task_number = "134"
+        self.task_number = "308"
 
         """配置总开关"""
         # 是否需要修改软件版本号
-        self.modify_version = False
+        self.modify_version = True
         # 是否需要修改软件通用属性（名称、型号、设备、制造商、品牌）
-        self.modify_universal_property = False
-        # 是否需要修改基本设置（屏幕亮度、电池百分比、WiFi默认状态、蓝牙默认状态，自动旋转、自动更新时区，默认屏幕灭屏时间）
-        self.modify_base_settings = False
+        self.modify_universal_property = True
+        # 是否需要修改基本设置（屏幕亮度、电池百分比、WiFi默认状态、蓝牙默认状态，自动旋转、自动更新时区，默认屏幕灭屏时间, 定位状态, 24 小时制时间）
+        self.modify_base_settings = True
         # 是否需要客制化 fingerprint
-        self.modify_fingerprint = False
-        # 是否需要固定软件信息（编译时间，软件版本号）
+        self.modify_fingerprint = True
+        # 是否需要固定软件信息（编译时间，kernal 版本号，安全补丁日期，谷歌包日期和 base_os 信息）
         self.fixed_software_info = False
         # 是否需要修改 TEE
         self.modify_tee = False
@@ -164,6 +164,29 @@ class Settings():
         """
         修改 fingerprint
         控制开关：modify_fingerprint
+        如果某个参数不需要设置，可以将其值设置为："not set", 例如：
+        self.build_number = "not set"
         """
         # 值为 数字、"not set" -> 不设置，"now" -> 使用当前时间值
         self.build_number = 'now'
+
+        """
+        固定软件信息（编译时间，kernal 版本号，安全补丁日期，谷歌包日期和 base_os 信息）
+        控制开关：fixed_software_info
+        如果某个参数不需要设置，可以将其值设置为："not set", 例如：
+        self.build_date = "not set"
+        """
+        # ro.build.date 的值
+        self.build_date = 'Mon Feb 14 16:19:06 CST 2022'
+        # ro.build.date.utc 的值
+        self.build_utc = '1644826746'
+        # adb shell cat proc/version 的值
+        self.proc_version ='Linux version 4.14.186 (nobody@android-build) (Android (6443078 based on r383902) clang version 11.0.1 (https://android.googlesource.com/toolchain/llvm-project b397f81060ce6d701042b782172ed13bee898b79), LLD 11.0.1 (/buildbot/tmp/tmp6_m7QH b397f81060ce6d701042b782172ed13bee898b79)) #1 SMP PREEMPT Mon Feb 14 14:29:45 CST 2022'
+        # Settings -> About tablet -> Android version -> Kernel version 的值
+        self.kernel_version = "4.14.186\n#1 Mon Feb 14 14:29:45 CST 2022"
+        # ro.build.version.security_patch 的值（安全补丁日期）
+        self.security_patch = '2022-07-05'
+        # ro.com.google.gmsversion 的值（谷歌包日期）
+        self.gms_version = '12_202204.go'
+        # ro.build.version.base_os 的值
+        self.base_os = "[Multilaser/M10_4G_T3/ML_SO0N_M10_4G_T3:12/GOV.V1_20220701/1:user/release-keys"
