@@ -5,6 +5,7 @@ from tkinter.ttk import *
 from log import Log
 from project_info import ProjectInfo
 from project_info_config import ProjectInfoConfig
+from version import Version
 
 class MainWindow(object):
     """
@@ -36,6 +37,8 @@ class MainWindow(object):
 
         # 工程配置设置界面处理对象
         self.projectInfo = ProjectInfo(self.project, self.projectInfoConfig, self.log)
+        # 版本号设置界面处理对象
+        self.versionInfo = Version(self.version, self.projectInfoConfig, self.log)
 
         # 设置界面添加到选项卡中
         self.noteBook.add(self.project, text="工程信息")
@@ -45,6 +48,8 @@ class MainWindow(object):
         self.root.bind("<Configure>", self.window_configure_change)
         # 绑定控件显示状态改变事件
         self.noteBook.bind("<Visibility>", self.notebook_visibility)
+        # 绑定 Tab 改变事件
+        self.noteBook.bind("<<NotebookTabChanged>>", self.notebookTabChanged)
 
         # 显示选项卡
         self.noteBook.pack(padx=10, pady=10, fill=BOTH, expand=TRUE)
@@ -67,7 +72,10 @@ class MainWindow(object):
         """
         布局窗口
         """
-        self.projectInfo.layout(self.noteBook.winfo_width(), self.noteBook.winfo_height())
+        width = self.noteBook.winfo_width()
+        height = self.noteBook.winfo_height()
+        self.projectInfo.layout(width, height)
+        self.versionInfo.layout(width, height)
 
     
     def notebook_visibility(self, event=None):
@@ -81,6 +89,16 @@ class MainWindow(object):
                 + ", height: " + str(self.noteBook.winfo_height()))
             if event.state == 'VisibilityUnobscured':
                 self.layoutWindow()
+
+
+    def notebookTabChanged(self, event):
+        """
+        Notebook tab 改变回调方法
+        """
+        width = self.noteBook.winfo_width()
+        height = self.noteBook.winfo_height()
+        self.versionInfo.updateUIInfo()
+        self.versionInfo.layout(width=width, height=height)
 
 
 def main():

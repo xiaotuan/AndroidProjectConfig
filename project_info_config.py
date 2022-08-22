@@ -27,7 +27,7 @@ class ProjectInfoConfig():
         # 禅道任务号
         self.taskNumber = "204"
         # Android 版本
-        self.androidVersion = "11"
+        self.androidVersion = "12"
         # 芯片厂商
         self.chipMaker = "Mediatek"
         # 芯片型号

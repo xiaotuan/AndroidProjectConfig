@@ -21,16 +21,19 @@ class ProjectInfo():
     def __init__(self, frame, config, log):
         self.tag = "ProjectInfo"
 
+        # 工程配置界面
         self.projectFrame = frame
-        self.log = log
-
-        self.gmsVar = IntVar()
-        self.gmsVar.set(2)
-        self.goVar = IntVar()
-        self.goVar.set(1)
-
         # 配置信息类
         self.projectInfoConfig = config
+        # 日志对象
+        self.log = log
+
+        # GMS 选项默认值
+        self.gmsVar = IntVar()
+        self.gmsVar.set(2)
+        # GO 选项默认值
+        self.goVar = IntVar()
+        self.goVar.set(1)
         
         # 初始化UI
         self.initUI()
