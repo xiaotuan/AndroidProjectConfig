@@ -17,21 +17,21 @@ class ProjectInfoConfig():
         # 日志标题
         self.tag = "ProjectInfoConfig"
         # 工程根目录路径
-        self.projectPath = "\\\\192.168.0.27\\qintuanye\\work01\\mtk\\11\\8766\\C\\mt8766_r\\"
+        self.projectPath = "//192.168.0.27/qintuanye/work02/mtk/12/8766/C/mt8766_s"
         # 工程驱动客制化目录路径
-        self.driveCustomPath = "\\\\192.168.0.27\\qintuanye\\work01\\mtk\\11\\8766\\C\\mt8766_r\\weibu\\tb8766p1_64_bsp\\M558_YLT_204\\"
+        self.driveCustomPath = "//192.168.0.27/qintuanye/work02/mtk/12/8766/C/mt8766_s/weibu/tb8765ap1_bsp_1g_k419/M863U_GRTY_134"
         # 工程客制化目录路径
-        self.customPath = "\\\\192.168.0.27\\qintuanye\\work01\\mtk\\11\\8766\\C\\mt8766_r\\weibu\\tb8766p1_64_bsp\\M558_YLT_204-MMI\\"
+        self.customPath = "//192.168.0.27/qintuanye/work02/mtk/12/8766/C/mt8766_s/weibu/tb8765ap1_bsp_1g_k419/M863U_GRTY_134-E8765-MMI"
         # 公版名称
-        self.publicVersionName = "tb8766p1_64_bsp"
+        self.publicVersionName = "tb8765ap1_bsp_1g_k419"
         # 禅道任务号
-        self.taskNumber = "204"
+        self.taskNumber = "134"
         # Android 版本
         self.androidVersion = "12"
         # 芯片厂商
         self.chipMaker = "Mediatek"
         # 芯片型号
-        self.chipModel = "8766"
+        self.chipModel = "8765"
         # 是否是 GMS 项目
         self.gms = False
         # 是否是 GO 项目
@@ -39,7 +39,7 @@ class ProjectInfoConfig():
         # 是否是 1GB GO 项目
         self.oneGoGms = False
         # 是否是 2GB GO 项目
-        self.twoGoGms = False
+        self.twoGoGms = True
 
     
     def read(self):

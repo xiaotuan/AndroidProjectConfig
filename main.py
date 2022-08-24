@@ -6,6 +6,7 @@ from log import Log
 from project_info import ProjectInfo
 from project_info_config import ProjectInfoConfig
 from version import Version
+from tee import Tee
 
 class MainWindow(object):
     """
@@ -34,15 +35,20 @@ class MainWindow(object):
         self.project = Frame(self.noteBook)
         # 版本号设置界面
         self.version = Frame(self.noteBook)
+        # TEE 设置界面
+        self.tee = Frame(self.noteBook)
 
         # 工程配置设置界面处理对象
         self.projectInfo = ProjectInfo(self.project, self.projectInfoConfig, self.log)
         # 版本号设置界面处理对象
         self.versionInfo = Version(self.version, self.projectInfoConfig, self.log)
+        # TEE 设置界面处理对象
+        self.teeInfo = Tee(self.tee, self.projectInfoConfig, self.log)
 
         # 设置界面添加到选项卡中
         self.noteBook.add(self.project, text="工程信息")
         self.noteBook.add(self.version, text="版本号")
+        self.noteBook.add(self.tee, text="TEE")
 
         # 绑定窗口配置改变事件
         self.root.bind("<Configure>", self.window_configure_change)
@@ -76,6 +82,7 @@ class MainWindow(object):
         height = self.noteBook.winfo_height()
         self.projectInfo.layout(width, height)
         self.versionInfo.layout(width, height)
+        self.teeInfo.layout(width, height)
 
     
     def notebook_visibility(self, event=None):
@@ -95,10 +102,12 @@ class MainWindow(object):
         """
         Notebook tab 改变回调方法
         """
-        width = self.noteBook.winfo_width()
-        height = self.noteBook.winfo_height()
-        self.versionInfo.updateUIInfo()
-        self.versionInfo.layout(width=width, height=height)
+        tabName = self.noteBook.tab(self.noteBook.select(), 'text')
+        self.log.d(self.tag, "[notebookTabChanged] tabName: " + tabName)
+        if tabName == '版本号':
+            self.versionInfo.updateUIInfo()
+        elif tabName == 'TEE':
+            self.teeInfo.updateUIInfo()
 
 
 def main():

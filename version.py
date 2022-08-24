@@ -1,9 +1,6 @@
-from hashlib import new
-from operator import mod
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
-from turtle import bgcolor
 from version_config import VersionConfig
 import threading
 import traceback
@@ -59,8 +56,8 @@ class Version():
         """
         绑定 UI 事件
         """
-        self.frame.bind("<Configure>", self.versionVisibilityChanged)
         self.versionEntry.bind("<KeyRelease>", self.versionContentChanged)
+
 
     def updateUIInfo(self):
         """
@@ -116,13 +113,6 @@ class Version():
             messagebox.showinfo("保存配置", "保存成功！")
         else:
             messagebox.showerror("保存配置", "保存失败！")
-
-    
-    def versionVisibilityChanged(self, event):
-        """
-        版本号设置界面显示或隐藏状态改变回调方法
-        """
-        threading.Timer(0.5, self.layout(self.width, self.height))
         
     
     def versionContentChanged(self, event):
@@ -160,11 +150,13 @@ class Version():
             if self.projectConfig.androidVersion == '12':
                 return self.getMtkAndroid12Version()
             else:
-                raise Exception("Getting the version number of Android " + self.projectConfig.androidVersion + " is not supported")
+                self.log.w(self.tag, "[getVersion] Getting the version number of Android " + self.projectConfig.androidVersion + " is not supported")
+                return ""
         else:
-            raise Exception("Obtaining the version number of the "
+            self.log.w(self.tag, "[getVersion]  Obtaining the version number of the "
                 + self.projectConfig.chipMaker
                 + " chip manufacturer is not supported")
+            return ""
 
     
     def getMtkAndroid12Version(self):
@@ -191,13 +183,19 @@ class Version():
         """
         设置版本号
         """
+        if self.versionConfig.version is None or self.versionConfig.version.strip() == '':
+            messagebox.showwarning("警告", "软件版本号不能为空！")
+            return False
+
         result = False
         if self.projectConfig.chipMaker == 'Mediatek':
             result = self.setMediatekVersion()
         else:
             result = False
 
+        self.layout(self.width, self.height)
         self.showVersionStatusLabel(result)
+        
         if result:
             messagebox.showinfo("设置版本号", "设置成功！")
         else:

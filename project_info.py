@@ -130,9 +130,9 @@ class ProjectInfo():
         y = 5
         width = w - 25
         # 工程目录路径
-        self.projectPathLabel.place(x=x, y=y, width=width)
+        self.projectPathLabel.place(x=x, y=y, width=width - 2 * x)
         y += self.projectPathLabel.winfo_height() + 5
-        self.projectPathFrame.place(x=x, y=y, width=width, height=self.projectPathSelectButton.winfo_height())
+        self.projectPathFrame.place(x=x, y=y, width=width - 2 * x, height=self.projectPathSelectButton.winfo_height())
         self.projectPathEntry.place(x=0,
             y=int((self.projectPathSelectButton.winfo_height()- self.projectPathEntry.winfo_height()) / 2),
             width=width - 30 - self.projectPathSelectButton.winfo_width())
@@ -140,9 +140,9 @@ class ProjectInfo():
         
         # 驱动客制化目录路径
         y += self.projectPathFrame.winfo_height() + 5
-        self.drivePathLabel.place(x=x, y=y, width=width)
+        self.drivePathLabel.place(x=x, y=y, width=width - 2 * x)
         y += self.drivePathLabel.winfo_height() + 5
-        self.drivePathFrame.place(x=x, y=y, width=width, height=self.drivePathSelectButton.winfo_height())
+        self.drivePathFrame.place(x=x, y=y, width=width - 2 * x, height=self.drivePathSelectButton.winfo_height())
         self.drivePathEntry.place(x=0,
             y=int((self.drivePathSelectButton.winfo_height() - self.drivePathEntry.winfo_height()) / 2),
             width=width - 30 - self.drivePathSelectButton.winfo_width())
@@ -150,9 +150,9 @@ class ProjectInfo():
 
         # 客制化目录路径
         y += self.drivePathFrame.winfo_height() + 5
-        self.customPathLabel.place(x=x, y=y, width=width)
+        self.customPathLabel.place(x=x, y=y, width=width - 2 * x)
         y += self.customPathLabel.winfo_height() + 5
-        self.customPathFrame.place(x=x, y=y, width=width, height=self.customPathSelectButton.winfo_height())
+        self.customPathFrame.place(x=x, y=y, width=width - 2 * x, height=self.customPathSelectButton.winfo_height())
         self.customPathEntry.place(x=0,
             y=int((self.customPathSelectButton.winfo_height() - self.customPathEntry.winfo_height()) / 2),
             width=width - 30 - self.customPathSelectButton.winfo_width())
