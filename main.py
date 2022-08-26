@@ -6,7 +6,10 @@ from log import Log
 from project_info import ProjectInfo
 from project_info_config import ProjectInfoConfig
 from version import Version
+<<<<<<< HEAD
 from tee import Tee
+=======
+>>>>>>> e302715 (完成Fingerprint设置界面及功能)
 
 class MainWindow(object):
     """
@@ -42,8 +45,11 @@ class MainWindow(object):
         self.projectInfo = ProjectInfo(self.project, self.projectInfoConfig, self.log)
         # 版本号设置界面处理对象
         self.versionInfo = Version(self.version, self.projectInfoConfig, self.log)
+<<<<<<< HEAD
         # TEE 设置界面处理对象
         self.teeInfo = Tee(self.tee, self.projectInfoConfig, self.log)
+=======
+>>>>>>> e302715 (完成Fingerprint设置界面及功能)
 
         # 设置界面添加到选项卡中
         self.noteBook.add(self.project, text="工程信息")
@@ -82,7 +88,10 @@ class MainWindow(object):
         height = self.noteBook.winfo_height()
         self.projectInfo.layout(width, height)
         self.versionInfo.layout(width, height)
+<<<<<<< HEAD
         self.teeInfo.layout(width, height)
+=======
+>>>>>>> e302715 (完成Fingerprint设置界面及功能)
 
     
     def notebook_visibility(self, event=None):
@@ -102,12 +111,19 @@ class MainWindow(object):
         """
         Notebook tab 改变回调方法
         """
+<<<<<<< HEAD
         tabName = self.noteBook.tab(self.noteBook.select(), 'text')
         self.log.d(self.tag, "[notebookTabChanged] tabName: " + tabName)
         if tabName == '版本号':
             self.versionInfo.updateUIInfo()
         elif tabName == 'TEE':
             self.teeInfo.updateUIInfo()
+=======
+        width = self.noteBook.winfo_width()
+        height = self.noteBook.winfo_height()
+        self.versionInfo.updateUIInfo()
+        self.versionInfo.layout(width=width, height=height)
+>>>>>>> e302715 (完成Fingerprint设置界面及功能)
 
 
 def main():

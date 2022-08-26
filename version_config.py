@@ -16,6 +16,11 @@ class VersionConfig():
         self.tag = "VersionConfig"
         # 版本号
         self.version = ""
+<<<<<<< HEAD
+=======
+        # 版本序号
+        self.version_number = ""
+>>>>>>> e302715 (完成Fingerprint设置界面及功能)
 
     
     def read(self):
@@ -28,6 +33,10 @@ class VersionConfig():
                 with open(self.configFilePath, mode='r', newline=None) as file:
                     configs = json.load(file)
                     self.version = configs['version']
+<<<<<<< HEAD
+=======
+                    self.version_number = configs['version_number']
+>>>>>>> e302715 (完成Fingerprint设置界面及功能)
                     result = True
             except:
                 self.log.e(self.tag, "[save] error: " + traceback.format_exc())
@@ -44,6 +53,10 @@ class VersionConfig():
         result = False
         configs = {
             'version' : self.version,
+<<<<<<< HEAD
+=======
+            'version_number' : self.version_number
+>>>>>>> e302715 (完成Fingerprint设置界面及功能)
         }
         oldContent = None
         try:
