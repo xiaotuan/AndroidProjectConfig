@@ -10,7 +10,6 @@ from tkinter import messagebox
 from turtle import bgcolor
 >>>>>>> e302715 (完成Fingerprint设置界面及功能)
 from version_config import VersionConfig
-import threading
 import traceback
 import os
 import shutil

@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter import messagebox
 from tkinter.ttk import *
 
 from log import Log
@@ -8,8 +7,13 @@ from project_info_config import ProjectInfoConfig
 from version import Version
 <<<<<<< HEAD
 from tee import Tee
+<<<<<<< HEAD
 =======
 >>>>>>> e302715 (完成Fingerprint设置界面及功能)
+=======
+from fingerprint import FingerPrint
+from system_property import SystemProperty
+>>>>>>> 43eb669 (完成系统属性设置界面及功能)
 
 class MainWindow(object):
     """
@@ -40,6 +44,10 @@ class MainWindow(object):
         self.version = Frame(self.noteBook)
         # TEE 设置界面
         self.tee = Frame(self.noteBook)
+        # fingerprint 设置界面
+        self.fingerprint = Frame(self.noteBook)
+        # 系统属性设置界面
+        self.systemProperty = Frame(self.noteBook)
 
         # 工程配置设置界面处理对象
         self.projectInfo = ProjectInfo(self.project, self.projectInfoConfig, self.log)
@@ -48,13 +56,22 @@ class MainWindow(object):
 <<<<<<< HEAD
         # TEE 设置界面处理对象
         self.teeInfo = Tee(self.tee, self.projectInfoConfig, self.log)
+<<<<<<< HEAD
 =======
 >>>>>>> e302715 (完成Fingerprint设置界面及功能)
+=======
+        # Fingerprint 设置界面处理对象
+        self.fingerprintInfo = FingerPrint(self.fingerprint, self.projectInfoConfig, self.log)
+        # 系统属性设置界面处理对象
+        self.systemPropertyInfo = SystemProperty(self.systemProperty, self.projectInfoConfig, self.log)
+>>>>>>> 43eb669 (完成系统属性设置界面及功能)
 
         # 设置界面添加到选项卡中
         self.noteBook.add(self.project, text="工程信息")
         self.noteBook.add(self.version, text="版本号")
         self.noteBook.add(self.tee, text="TEE")
+        self.noteBook.add(self.fingerprint, text="Fingerprint")
+        self.noteBook.add(self.systemProperty, text="系统属性")
 
         # 绑定窗口配置改变事件
         self.root.bind("<Configure>", self.window_configure_change)
@@ -90,8 +107,13 @@ class MainWindow(object):
         self.versionInfo.layout(width, height)
 <<<<<<< HEAD
         self.teeInfo.layout(width, height)
+<<<<<<< HEAD
 =======
 >>>>>>> e302715 (完成Fingerprint设置界面及功能)
+=======
+        self.fingerprintInfo.layout(width, height)
+        self.systemPropertyInfo.layout(width, height)
+>>>>>>> 43eb669 (完成系统属性设置界面及功能)
 
     
     def notebook_visibility(self, event=None):
@@ -118,12 +140,19 @@ class MainWindow(object):
             self.versionInfo.updateUIInfo()
         elif tabName == 'TEE':
             self.teeInfo.updateUIInfo()
+<<<<<<< HEAD
 =======
         width = self.noteBook.winfo_width()
         height = self.noteBook.winfo_height()
         self.versionInfo.updateUIInfo()
         self.versionInfo.layout(width=width, height=height)
 >>>>>>> e302715 (完成Fingerprint设置界面及功能)
+=======
+        elif tabName == 'Fingerprint':
+            self.fingerprintInfo.updateUIInfo()
+        elif tabName == '系统属性':
+            self.systemPropertyInfo.updateUIInfo()
+>>>>>>> 43eb669 (完成系统属性设置界面及功能)
 
 
 def main():

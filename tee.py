@@ -1,12 +1,8 @@
-from asyncio.constants import SENDFILE_FALLBACK_READBUFFER_SIZE
-from random import setstate
 from tkinter import *
 from tkinter import filedialog
 from tkinter.ttk import *
 from tkinter import messagebox
-from unittest import result
 from tee_config import TeeConfig
-import threading
 import traceback
 import os
 import shutil
@@ -262,8 +258,8 @@ class Tee():
         customTeeConfigFilePath = self.projectConfig.driveCustomPath + "/alps/vendor/mediatek/proprietary/trustzone/custom/build/project/"\
             + self.projectConfig.publicVersionName + ".mk"
         projectConfigFilePath = self.projectConfig.driveCustomPath + "/config/ProjectConfig.mk"
-        klConfigFilePath = self.projectConfig.driveCustomPath + "/config/tb8765ap1_bsp_1g_k419_defconfig"
-        plConfigFilePath = self.projectConfig.driveCustomPath + "/config/tb8765ap1_bsp_1g_k419_pl.mk"
+        klConfigFilePath = self.projectConfig.driveCustomPath + "/config/" + self.projectConfig.publicVersionName + "_defconfig"
+        plConfigFilePath = self.projectConfig.driveCustomPath + "/config/" + self.projectConfig.publicVersionName + "_pl.mk"
         
         try:
             if not self.config.teeEnabled:
@@ -317,6 +313,12 @@ class Tee():
                             file.write("MTK_TEE_SUPPORT=no\n")
                         if not hasTrustkernelTeeSupport:
                             file.write("TRUSTKERNEL_TEE_SUPPORT=no\n")
+            else:
+                with open(projectConfigFilePath, mode='w', newline='\n', encoding='utf8') as file:
+                    file.write("MTK_PERSIST_PARTITION_SUPPORT=no\n")
+                    file.write("MTK_TEE_SUPPORT=no\n")
+                    file.write("TRUSTKERNEL_TEE_SUPPORT=no\n")
+            
 
             # 修改 tb8765ap1_bsp_1g_k419_defconfig 文件
             if os.path.exists(klConfigFilePath):
@@ -357,6 +359,11 @@ class Tee():
                             file.write("# CONFIG_TRUSTKERNEL_TEE_FP_SUPPORT is not set\n")
                         if not hasTrustkernelTeeSupport:
                             file.write("#CONFIG_TRUSTKERNEL_TEE_RPMB_SUPPORT is not set\n")
+            else:
+                with open(klConfigFilePath, mode='w', newline='\n', encoding='utf8') as file:
+                    file.write("# CONFIG_TRUSTKERNEL_TEE_SUPPORT is not set\n")
+                    file.write("# CONFIG_TRUSTKERNEL_TEE_FP_SUPPORT is not set\n")
+                    file.write("#CONFIG_TRUSTKERNEL_TEE_RPMB_SUPPORT is not set\n")
 
             # 修改 tb8765ap1_bsp_1g_k419_pl.mk 文件
             if os.path.exists(plConfigFilePath):
@@ -390,6 +397,10 @@ class Tee():
                             file.write("MTK_TEE_SUPPORT=no\n")
                         if not hasTrustkernalTeeSupport:
                             file.write("TRUSTKERNEL_TEE_SUPPORT=no\n")
+            else:
+                with open(plConfigFilePath, mode='w', newline='\n', encoding='utf8') as file:
+                    file.write("MTK_TEE_SUPPORT=no\n")
+                    file.write("TRUSTKERNEL_TEE_SUPPORT=no\n")
 
             # 修改 {self.projectConfig.publicVersionName}.mk 文件
             if not self.config.teeEnabled:
@@ -417,6 +428,7 @@ class Tee():
                                 else:
                                     line = line.replace('yes', 'no')
                             file.write(line)
+
             return True    
         except:
             self.log.e(self.tag, "[setMtkAndroid12TeeStatus] error: " + traceback.format_exc())
