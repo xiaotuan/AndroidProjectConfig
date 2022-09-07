@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter import messagebox
 from tkinter.ttk import *
 
 from log import Log
@@ -7,6 +6,8 @@ from project_info import ProjectInfo
 from project_info_config import ProjectInfoConfig
 from version import Version
 from tee import Tee
+from fingerprint import FingerPrint
+from system_property import SystemProperty
 
 class MainWindow(object):
     """
@@ -37,6 +38,10 @@ class MainWindow(object):
         self.version = Frame(self.noteBook)
         # TEE 设置界面
         self.tee = Frame(self.noteBook)
+        # fingerprint 设置界面
+        self.fingerprint = Frame(self.noteBook)
+        # 系统属性设置界面
+        self.systemProperty = Frame(self.noteBook)
 
         # 工程配置设置界面处理对象
         self.projectInfo = ProjectInfo(self.project, self.projectInfoConfig, self.log)
@@ -44,11 +49,17 @@ class MainWindow(object):
         self.versionInfo = Version(self.version, self.projectInfoConfig, self.log)
         # TEE 设置界面处理对象
         self.teeInfo = Tee(self.tee, self.projectInfoConfig, self.log)
+        # Fingerprint 设置界面处理对象
+        self.fingerprintInfo = FingerPrint(self.fingerprint, self.projectInfoConfig, self.log)
+        # 系统属性设置界面处理对象
+        self.systemPropertyInfo = SystemProperty(self.systemProperty, self.projectInfoConfig, self.log)
 
         # 设置界面添加到选项卡中
         self.noteBook.add(self.project, text="工程信息")
         self.noteBook.add(self.version, text="版本号")
         self.noteBook.add(self.tee, text="TEE")
+        self.noteBook.add(self.fingerprint, text="Fingerprint")
+        self.noteBook.add(self.systemProperty, text="系统属性")
 
         # 绑定窗口配置改变事件
         self.root.bind("<Configure>", self.window_configure_change)
@@ -83,6 +94,8 @@ class MainWindow(object):
         self.projectInfo.layout(width, height)
         self.versionInfo.layout(width, height)
         self.teeInfo.layout(width, height)
+        self.fingerprintInfo.layout(width, height)
+        self.systemPropertyInfo.layout(width, height)
 
     
     def notebook_visibility(self, event=None):
@@ -108,6 +121,10 @@ class MainWindow(object):
             self.versionInfo.updateUIInfo()
         elif tabName == 'TEE':
             self.teeInfo.updateUIInfo()
+        elif tabName == 'Fingerprint':
+            self.fingerprintInfo.updateUIInfo()
+        elif tabName == '系统属性':
+            self.systemPropertyInfo.updateUIInfo()
 
 
 def main():

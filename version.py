@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
 from version_config import VersionConfig
-import threading
 import traceback
 import os
 import shutil
