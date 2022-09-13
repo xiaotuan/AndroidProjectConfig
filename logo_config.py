@@ -2,22 +2,20 @@ import os
 import json
 import traceback
 
-class VersionConfig():
+class LogoConfig():
     """
-    版本号配置类
+    Logo配置类
     """
 
     def __init__(self, log):
         # 配置文件路径
-        self.configFilePath = "./.configs/version_config.json"
+        self.configFilePath = "./.configs/logo_config.json"
         # 日志类
         self.log = log
         # 日志标题
-        self.tag = "VersionConfig"
-        # 版本号
-        self.version = ""
-        # 版本序号
-        self.version_number = ""
+        self.tag = "LogoConfig"
+        # logo 文件
+        self.logoFilePath = ""
 
     
     def read(self):
@@ -29,8 +27,7 @@ class VersionConfig():
             try:
                 with open(self.configFilePath, mode='r', newline=None) as file:
                     configs = json.load(file)
-                    self.version = configs['version']
-                    self.version_number = configs['version_number']
+                    self.teeEnabled = configs['logo_file_path']
                     result = True
             except:
                 self.log.e(self.tag, "[save] error: " + traceback.format_exc())
@@ -46,8 +43,7 @@ class VersionConfig():
         """
         result = False
         configs = {
-            'version' : self.version,
-            'version_number' : self.version_number
+            'logo_file_path' : self.logoFilePath
         }
         oldContent = None
         try:

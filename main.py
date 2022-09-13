@@ -121,6 +121,10 @@ class MainWindow(object):
             self.versionInfo.updateUIInfo()
         elif tabName == 'TEE':
             self.teeInfo.updateUIInfo()
+            width = self.noteBook.winfo_width()
+            height = self.noteBook.winfo_height()
+            self.versionInfo.updateUIInfo()
+            self.versionInfo.layout(width=width, height=height)
         elif tabName == 'Fingerprint':
             self.fingerprintInfo.updateUIInfo()
         elif tabName == '系统属性':
