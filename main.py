@@ -8,6 +8,7 @@ from version import Version
 from tee import Tee
 from fingerprint import FingerPrint
 from system_property import SystemProperty
+from logo import Logo
 
 class MainWindow(object):
     """
@@ -42,6 +43,8 @@ class MainWindow(object):
         self.fingerprint = Frame(self.noteBook)
         # 系统属性设置界面
         self.systemProperty = Frame(self.noteBook)
+        # LOGO 设置界面
+        self.logo = Frame(self.noteBook)
 
         # 工程配置设置界面处理对象
         self.projectInfo = ProjectInfo(self.project, self.projectInfoConfig, self.log)
@@ -53,6 +56,8 @@ class MainWindow(object):
         self.fingerprintInfo = FingerPrint(self.fingerprint, self.projectInfoConfig, self.log)
         # 系统属性设置界面处理对象
         self.systemPropertyInfo = SystemProperty(self.systemProperty, self.projectInfoConfig, self.log)
+        # LOGO 设置界面处理对象
+        self.logoInfo = Logo(self.logo, self.projectInfoConfig, self.log)
 
         # 设置界面添加到选项卡中
         self.noteBook.add(self.project, text="工程信息")
@@ -60,6 +65,7 @@ class MainWindow(object):
         self.noteBook.add(self.tee, text="TEE")
         self.noteBook.add(self.fingerprint, text="Fingerprint")
         self.noteBook.add(self.systemProperty, text="系统属性")
+        self.noteBook.add(self.logo, text="LOGO")
 
         # 绑定窗口配置改变事件
         self.root.bind("<Configure>", self.window_configure_change)
@@ -96,6 +102,7 @@ class MainWindow(object):
         self.teeInfo.layout(width, height)
         self.fingerprintInfo.layout(width, height)
         self.systemPropertyInfo.layout(width, height)
+        self.logoInfo.layout(width, height)
 
     
     def notebook_visibility(self, event=None):
@@ -129,6 +136,8 @@ class MainWindow(object):
             self.fingerprintInfo.updateUIInfo()
         elif tabName == '系统属性':
             self.systemPropertyInfo.updateUIInfo()
+        elif tabName == 'LOGO':
+            self.logoInfo.updateUIInfo()
 
 
 def main():
