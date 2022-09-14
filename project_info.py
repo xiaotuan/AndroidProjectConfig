@@ -399,9 +399,7 @@ class ProjectInfo():
         """
         保存按钮点击事件处理方法
         """
-        if self.projectInfoConfig.save():
-            messagebox.showinfo("保存配置", "保存成功！", type=None)
-        else:
+        if not self.projectInfoConfig.save():
             messagebox.showerror("保存配置", "保存失败！", type=None)
 
 
@@ -411,6 +409,5 @@ class ProjectInfo():
         """
         if self.projectInfoConfig.read():
             self.updateUIInfo()
-            messagebox.showinfo("读取配置", "读取成功！", type=None)
         else:
             messagebox.showerror("读取配置", "读取失败！", type=None)

@@ -68,11 +68,11 @@ class Logo():
         """
         更新 UI 信息
         """
-        self.log.d(self.tag, "[updateUIInfo]current: " + self.projectConfig.customPath + ", old: " + str(self.customPath))
+        self.log.d(self.tag, "updateUIInfo=>current: " + self.projectConfig.customPath + ", old: " + str(self.customPath))
         if self.customPath != self.projectConfig.customPath:
             self.config.logoFilePath = self.getLogoFilePath()
             self.customPath = self.projectConfig.customPath
-        self.log.d(self.tag, "[updateUIInfo] logo file: " + self.config.logoFilePath)
+        self.log.d(self.tag, "updateUIInfo=>logo file: " + self.config.logoFilePath)
         self.logoEntry.delete(0, "end")
         self.logoEntry.insert(0, self.config.logoFilePath)
         self.logoStateLabel.config(text="        ")
@@ -118,6 +118,29 @@ class Logo():
             return originPath
 
 
+    def isLandscapeProject(self):
+        """
+        是否是横屏项目
+        """
+        cisiFilePath = self.projectConfig.driveCustomPath + "/config/csci.ini"
+        if os.path.exists(cisiFilePath):
+            with open(cisiFilePath, mode='r', newline='\n', encoding='utf8') as file:
+                lines = file.readlines()
+                for line in lines:
+                    if line.startswith("ro.vendor.fake.orientation"):
+                        self.log.d(self.tag, "isLandscapeProject=>line: " + line)
+                        values = line.split(" ")
+                        for value in values[1:]:
+                            if value != "":
+                                self.log.d(self.tag, "isLandscapeProject=>value: " + value)
+                                return value == "1"
+
+            return False
+        else:
+            self.log.d(self.tag, "isLandscapeProject=>cisi.init file not exists.")
+            return False
+
+
     def getLogoDirectoryName(self):
         """
         获取 LOGO 文件存放目录名称
@@ -126,11 +149,11 @@ class Logo():
             if self.projectConfig.androidVersion == '12':
                 return self.getMtkAndroid12LogoDriectoryName()
             else:
-                self.log.w(self.tag, "[setCertFile] Unsupport Android " + self.projectConfig.androidVersion)
+                self.log.w(self.tag, "setCertFile=>Unsupport Android " + self.projectConfig.androidVersion)
                 messagebox.showerror("错误", "不支持 Android " + self.projectConfig.androidVersion + "。")
                 return ""
         else:
-            self.log.w(self.tag, "[setArrayFile] Unsupport " 
+            self.log.w(self.tag, "setArrayFile=>Unsupport " 
                     + self.projectConfig.chipMaker + " chip manufacturer")
             messagebox.showerror("错误", "不支持 " + self.projectConfig.chipMaker + " 芯片厂商。")
             return ""
@@ -149,7 +172,7 @@ class Logo():
                 lines = file.readlines()
                 for line in lines:
                     if line.startswith("BOOT_LOGO"):
-                        self.log.d(self.tag, "[getMtkAndroid12LogoDriectoryName] custom BOOT_LOGO: " + line)
+                        self.log.d(self.tag, "getMtkAndroid12LogoDriectoryName=>custom BOOT_LOGO: " + line)
                         values = line.split("=")
                         if len(values) == 2:
                             dirName = values[1].strip()
@@ -160,11 +183,14 @@ class Logo():
                 lines = file.readlines()
                 for line in lines:
                     if line.startswith("BOOT_LOGO"):
-                        self.log.d(self.tag, "[getMtkAndroid12LogoDriectoryName] origin BOOT_LOGO: " + line)
+                        self.log.d(self.tag, "getMtkAndroid12LogoDriectoryName=>origin BOOT_LOGO: " + line)
                         values = line.split("=")
                         if len(values) == 2:
                             dirName = values[1].strip()
                             break
+
+        if self.isLandscapeProject():
+            dirName += "nl"
 
         return dirName
 
@@ -181,7 +207,7 @@ class Logo():
         选择 LOGO 文件
         """
         path = filedialog.askopenfilename(filetypes=[("BMP","*.bmp"), ("BMP","*.BMP"), ("PNG","*.png"), ("PNG","*.PNG"), ("JPEG","*.jpg"), ("JPEG","*.JPG")])
-        self.log.d(self.tag, "[selectLogoFile] select file: " + path)
+        self.log.d(self.tag, "selectLogoFile=>select file: " + path)
         if path is not None and path.strip() != "":
             self.config.logoFilePath = path
             self.updateUIInfo()
@@ -193,7 +219,7 @@ class Logo():
         """
         if self.config.logoFilePath is not None and self.config.logoFilePath.strip() != "":
             img = cv2.imread(self.config.logoFilePath)
-            self.log.d(self.tag, "[showLogo] shap: " + str(img.shape))
+            self.log.d(self.tag, "showLogo=>shap: " + str(img.shape))
             cv2.namedWindow(os.path.basename(self.config.logoFilePath), cv2.WINDOW_NORMAL)
             width = int(img.shape[1] / 2)
             height = int(img.shape[0] / 2)
@@ -209,7 +235,7 @@ class Logo():
         """
         if self.config.logoFilePath is None or self.config.logoFilePath.strip() == ""\
             or not os.path.exists(self.config.logoFilePath):
-            self.log.e(self.tag, "[setLogo] Logo file path is empty or file is not exists.")
+            self.log.e(self.tag, "setLogo=>Logo file path is empty or file is not exists.")
             self.updateStateView(self.logoStateLabel, False)
             return False
 
@@ -219,12 +245,12 @@ class Logo():
                 self.updateStateView(self.logoStateLabel, result)
                 return result
             else:
-                self.log.w(self.tag, "[setLogo] Unsupport Android " + self.projectConfig.androidVersion)
+                self.log.w(self.tag, "setLogo=>Unsupport Android " + self.projectConfig.androidVersion)
                 messagebox.showerror("错误", "不支持 Android " + self.projectConfig.androidVersion + "。")
                 self.updateStateView(self.logoStateLabel, False)
                 return False
         else:
-            self.log.w(self.tag, "[setLogo] Unsupport " 
+            self.log.w(self.tag, "setLogo=>Unsupport " 
                     + self.projectConfig.chipMaker + " chip manufacturer")
             messagebox.showerror("错误", "不支持 " + self.projectConfig.chipMaker + " 芯片厂商。")
             self.updateStateView(self.logoStateLabel, False)

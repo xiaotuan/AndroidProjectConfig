@@ -1,13 +1,1 @@
-<<<<<<< HEAD
-{"project_path": "//192.168.0.27/qintuanye/work01/mtk/12/8766/A/mt8766_s", "drive_path": "//192.168.0.27/qintuanye/work01/mtk/12/8766/A/mt8766_s/weibu/tb8788p1_64_bsp_k419/M100BS_CC_261", "custom_path": "//192.168.0.27/qintuanye/work01/mtk/12/8766/A/mt8766_s/weibu/tb8788p1_64_bsp_k419/M100BS_CC_261-MMI", "public_version": "tb8788p1_64_bsp_k419", "task_number": "261", "android_version": "12", "chip_maker": "Mediatek", "chip_model": "8788", "gms": false, "go_gms": true, "one_go_gms": true, "two_go_gms": false}
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-{"project_path": "//192.168.0.27/qintuanye/work02/mtk/12/8766/C/mt8766_s", "drive_path": "//192.168.0.27/qintuanye/work02/mtk/12/8766/C/mt8766_s/weibu/tb8765ap1_bsp_1g_k419/M863U_GRTY_134", "custom_path": "//192.168.0.27/qintuanye/work02/mtk/12/8766/C/mt8766_s/weibu/tb8765ap1_bsp_1g_k419/M863U_GRTY_134-E8765-MMI", "public_version": "tb8765ap1_bsp_1g_k419", "task_number": "134", "android_version": "12", "chip_maker": "Mediatek", "chip_model": "8765", "gms": false, "go_gms": true, "one_go_gms": false, "two_go_gms": true}
-=======
-{"project_path": "//192.168.0.27/qintuanye/work02/mtk/12/8766/A/mt8766_s", "drive_path": "//192.168.0.27/qintuanye/work02/mtk/12/8766/A/mt8766_s/weibu/tb8768p1_64_bsp/M960YC_SM_159", "custom_path": "//192.168.0.27/qintuanye/work02/mtk/12/8766/A/mt8766_s/weibu/tb8768p1_64_bsp/M960YC_SM_159-M10_4G_T3-MMI", "public_version": "tb8768p1_64_bsp", "task_number": "134", "android_version": "12", "chip_maker": "Mediatek", "chip_model": "8768", "gms": false, "go_gms": true, "one_go_gms": false, "two_go_gms": true}
->>>>>>> e302715 (完成Fingerprint设置界面及功能)
-=======
-{"project_path": "//192.168.0.27/qintuanye/work01/mtk/12/8766/A/mt8766_s", "drive_path": "//192.168.0.27/qintuanye/work01/mtk/12/8766/A/mt8766_s/weibu/tb8788p1_64_bsp_k419/M100BS_CC_261", "custom_path": "//192.168.0.27/qintuanye/work01/mtk/12/8766/A/mt8766_s/weibu/tb8788p1_64_bsp_k419/M100BS_CC_261-MMI", "public_version": "tb8788p1_64_bsp_k419", "task_number": "261", "android_version": "12", "chip_maker": "Mediatek", "chip_model": "8788", "gms": false, "go_gms": true, "one_go_gms": true, "two_go_gms": false}
->>>>>>> 43eb669 (完成系统属性设置界面及功能)
->>>>>>> 561c8bf56864da4a21dde1789070339169cc446d
+{"project_path": "//192.168.0.27/qintuanye/work02/mtk/12/8766/C/mt8766_s", "drive_path": "//192.168.0.27/qintuanye/work02/mtk/12/8766/C/mt8766_s/weibu/tb8768p1_64_bsp/M960YC_SM_159", "custom_path": "//192.168.0.27/qintuanye/work02/mtk/12/8766/C/mt8766_s/weibu/tb8768p1_64_bsp/M960YC_SM_159-M10_4G_T3-MMI", "public_version": "tb8768p1_64_bsp", "task_number": "159", "android_version": "12", "chip_maker": "Mediatek", "chip_model": "8768", "gms": false, "go_gms": true, "one_go_gms": false, "two_go_gms": true}
