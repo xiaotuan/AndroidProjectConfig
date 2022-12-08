@@ -2,24 +2,20 @@ import os
 import json
 import traceback
 
-class TeeConfig():
+class LogoConfig():
     """
-    版本号配置类
+    Logo配置类
     """
 
     def __init__(self, log):
         # 配置文件路径
-        self.configFilePath = "./.configs/tee_config.json"
+        self.configFilePath = "./.configs/logo_config.json"
         # 日志类
         self.log = log
         # 日志标题
-        self.tag = "TeeConfig"
-        # 是否开启 TEE 功能
-        self.teeEnabled = True
-        # array.c 文件路径
-        self.arrayFilePath = ""
-        # cert.dat 文件路径
-        self.certFilePath = ""
+        self.tag = "LogoConfig"
+        # logo 文件
+        self.logoFilePath = ""
 
     
     def read(self):
@@ -29,11 +25,9 @@ class TeeConfig():
         result = False
         if os.path.exists(self.configFilePath):
             try:
-                with open(self.configFilePath, mode='r', newline=None) as file:
+                with open(self.configFilePath, mode='r', newline='\n') as file:
                     configs = json.load(file)
-                    self.teeEnabled = configs['tee_enabled']
-                    self.arrayFilePath = configs['array_file_path']
-                    self.certFilePath = configs['cert_file_path']
+                    self.teeEnabled = configs['logo_file_path']
                     result = True
             except:
                 self.log.e(self.tag, "[save] error: " + traceback.format_exc())
@@ -49,23 +43,21 @@ class TeeConfig():
         """
         result = False
         configs = {
-            'tee_enabled' : self.teeEnabled,
-            'array_file_path' : self.arrayFilePath,
-            'cert_file_path' : self.certFilePath
+            'logo_file_path' : self.logoFilePath
         }
         oldContent = None
         try:
             if os.path.exists(self.configFilePath):
-                with open(self.configFilePath, mode='r', newline=None) as file:
+                with open(self.configFilePath, mode='r', newline='\n') as file:
                     oldContent = file.read()
 
-            with open(self.configFilePath, mode='w+', newline=None) as file:
+            with open(self.configFilePath, mode='w+', newline='\n') as file:
                 json.dump(configs, file)
                 result = True
         except:
             self.log.e(self.tag, "[read] error: " + traceback.format_exc())
             if oldContent is not None:
-                with open(self.configFilePath, mode='w+', newline=None) as file:
+                with open(self.configFilePath, mode='w+', newline='\n') as file:
                     file.write(oldContent)
 
         return result

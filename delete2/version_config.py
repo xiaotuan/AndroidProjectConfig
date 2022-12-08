@@ -2,20 +2,22 @@ import os
 import json
 import traceback
 
-class LogoConfig():
+class VersionConfig():
     """
-    Logo配置类
+    版本号配置类
     """
 
     def __init__(self, log):
         # 配置文件路径
-        self.configFilePath = "./.configs/logo_config.json"
+        self.configFilePath = "./.configs/version_config.json"
         # 日志类
         self.log = log
         # 日志标题
-        self.tag = "LogoConfig"
-        # logo 文件
-        self.logoFilePath = ""
+        self.tag = "VersionConfig"
+        # 版本号
+        self.version = ""
+        # 版本序号
+        self.version_number = ""
 
     
     def read(self):
@@ -25,9 +27,10 @@ class LogoConfig():
         result = False
         if os.path.exists(self.configFilePath):
             try:
-                with open(self.configFilePath, mode='r', newline=None) as file:
+                with open(self.configFilePath, mode='r', newline='\n') as file:
                     configs = json.load(file)
-                    self.teeEnabled = configs['logo_file_path']
+                    self.version = configs['version']
+                    self.version_number = configs['version_number']
                     result = True
             except:
                 self.log.e(self.tag, "[save] error: " + traceback.format_exc())
@@ -43,21 +46,22 @@ class LogoConfig():
         """
         result = False
         configs = {
-            'logo_file_path' : self.logoFilePath
+            'version' : self.version,
+            'version_number' : self.version_number
         }
         oldContent = None
         try:
             if os.path.exists(self.configFilePath):
-                with open(self.configFilePath, mode='r', newline=None) as file:
+                with open(self.configFilePath, mode='r', newline='\n') as file:
                     oldContent = file.read()
 
-            with open(self.configFilePath, mode='w+', newline=None) as file:
+            with open(self.configFilePath, mode='w+', newline='\n') as file:
                 json.dump(configs, file)
                 result = True
         except:
             self.log.e(self.tag, "[read] error: " + traceback.format_exc())
             if oldContent is not None:
-                with open(self.configFilePath, mode='w+', newline=None) as file:
+                with open(self.configFilePath, mode='w+', newline='\n') as file:
                     file.write(oldContent)
 
         return result

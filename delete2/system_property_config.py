@@ -37,7 +37,7 @@ class SystemPropertyConfig():
         result = False
         if os.path.exists(self.configFilePath):
             try:
-                with open(self.configFilePath, mode='r', newline=None) as file:
+                with open(self.configFilePath, mode='r', newline='\n') as file:
                     configs = json.load(file)
                     self.brand = configs['brand']
                     self.model = configs['model']
@@ -72,16 +72,16 @@ class SystemPropertyConfig():
         oldContent = None
         try:
             if os.path.exists(self.configFilePath):
-                with open(self.configFilePath, mode='r', newline=None) as file:
+                with open(self.configFilePath, mode='r', newline='\n') as file:
                     oldContent = file.read()
 
-            with open(self.configFilePath, mode='w+', newline=None) as file:
+            with open(self.configFilePath, mode='w+', newline='\n') as file:
                 json.dump(configs, file)
                 result = True
         except:
             self.log.e(self.tag, "[read] error: " + traceback.format_exc())
             if oldContent is not None:
-                with open(self.configFilePath, mode='w+', newline=None) as file:
+                with open(self.configFilePath, mode='w+', newline='\n') as file:
                     file.write(oldContent)
 
         return result

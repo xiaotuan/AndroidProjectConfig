@@ -1,14 +1,9 @@
-from distutils.command.config import config
-from distutils.sysconfig import customize_compiler
-from genericpath import exists
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import filedialog
 from tkinter import messagebox
-import traceback
 import os
 import shutil
-from turtle import back
 import cv2
 from PIL import Image
 

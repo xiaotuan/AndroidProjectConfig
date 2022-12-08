@@ -1,0 +1,23 @@
+# 容器距离顶部距离
+CONTAINER_MARGIN_TOP = 5
+# 容器距离左边距离
+CONTAINER_MARGIN_LEFT = 10
+# 容器距离右边距离
+CONTAINER_MARGIN_RIGHT = 10
+# 容器距离底部距离
+CONTAINER_MARGIN_BOTTOM = 5
+
+# LabelFrame 补充高度
+LABEL_FRAME_ORIGIN_HEIGHT = 15
+
+# 子控件顶部间距
+CHILD_MARGIN_TOP = 5
+# 子控件左边间距
+CHILD_MARGIN_LEFT = 10
+# 子控件右边间距
+CHILD_MARGIN_RIGHT = 10
+# 子控件底部间距
+CHILD_MARGIN_BOTTOM = 5
+
+# 临时目录名称
+TEMP_DIR_NAME = "Temp"
