@@ -1,6 +1,7 @@
 import os
 from tkinter import *
 from tkinter.ttk import *
+from fingerprint.fingerprintview import FingerprintView
 
 import log
 import constant
@@ -79,8 +80,13 @@ class MainWindow:
         self.versionFrame = Frame(self.noteBook)
         self.versionView = VersionView(self.versionFrame, self.projectInfo, self.log)
 
+        # Fingerprint 选项卡
+        self.fingerprintFrame = Frame(self.noteBook)
+        self.fingerprintView = FingerprintView(self.fingerprintFrame, self.projectInfo, self.log)
+
         self.noteBook.add(self.projectInfoFrame, text="Android 工程信息")
         self.noteBook.add(self.versionFrame, text="版本号")
+        self.noteBook.add(self.fingerprintFrame, text="Fingerprint")
 
 
     def bindEvents(self):
@@ -125,6 +131,7 @@ class MainWindow:
         self.log.d(self.TAG, "onNoteBookTabChanged=>event: " + str(event))
         self.projectInfoView.updateViewInfo()
         self.versionView.updateViewInfo();
+        self.fingerprintView.updateViewInfo();
 
 
     def updateChildSized(self):
@@ -136,6 +143,7 @@ class MainWindow:
         self.log.d(self.TAG, "updateChildSized=>NoteBook width: " + str(width) + ", height: " + str(height))
         self.projectInfoView.onSizeChanged(width, height)
         self.versionView.onSizeChanged(width, height)
+        self.fingerprintView.onSizeChanged(width, height)
 
 
 def main():

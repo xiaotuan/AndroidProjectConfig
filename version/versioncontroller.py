@@ -62,11 +62,14 @@ class VersionController:
         max_width = width - (CONTAINER_MARGIN_LEFT + CONTAINER_MARGIN_RIGHT)
 
         self.view.versionLabel.place(x=x, y=y, width=max_width)
+
         y += self.view.versionLabel.winfo_height() + CHILD_MARGIN_TOP
         self.view.versionStateLabel.place(x=max_width - CHILD_MARGIN_RIGHT - self.view.versionStateLabel.winfo_width(),
             y=y + (self.view.versionEntry.winfo_height() - self.view.versionStateLabel.winfo_height()) / 2)
+
         self.view.versionEntry.place(x=x, y=y, 
             width=max_width - CHILD_MARGIN_LEFT * 2 - CHILD_MARGIN_RIGHT - self.view.versionStateLabel.winfo_width())
+            
         y += self.view.versionEntry.winfo_height() + CHILD_MARGIN_TOP * 2
         self.view.versionButton.place(x=(max_width - self.view.versionButton.winfo_width()) / 2, y=y)
 
