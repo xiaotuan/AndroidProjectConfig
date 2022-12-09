@@ -1,10 +1,8 @@
 from tkinter import *
-from tkinter import messagebox
-from tkinter import filedialog
 from tkinter.ttk import *
-from projectinfo.ProjectInfo import GmsType, GoGmsType
+from projectinfo.projectinfo import GmsType, GoGmsType
 
-from projectinfo.ProjectInfoViewController import ProjectInfoViewController
+from projectinfo.projectinfocontroller import ProjectInfoViewController
 
 
 class ProjectInfoView:
@@ -22,7 +20,7 @@ class ProjectInfoView:
 
         self.initValues()
         self.initViews()
-        self.bindEvents()
+        self.bindViewEvent()
 
 
     def initValues(self):
@@ -100,7 +98,7 @@ class ProjectInfoView:
         self.readButton = Button(self.frame, text="读取配置", command=self.controller.readConfig)
         self.saveButton = Button(self.frame, text="保存配置", command=self.controller.saveConfig)
 
-    def bindEvents(self):
+    def bindViewEvent(self):
         """
         绑定控件事件
         """

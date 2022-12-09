@@ -3,17 +3,17 @@ import os
 from tkinter import filedialog
 import traceback
 import shutil
-from Constant import CONTAINER_MARGIN_TOP
-from Constant import CONTAINER_MARGIN_LEFT
-from Constant import CONTAINER_MARGIN_RIGHT
-from Constant import CONTAINER_MARGIN_BOTTOM
-from Constant import CHILD_MARGIN_TOP
-from Constant import CHILD_MARGIN_LEFT
-from Constant import CHILD_MARGIN_RIGHT
-from Constant import CHILD_MARGIN_BOTTOM
-from Constant import LABEL_FRAME_ORIGIN_HEIGHT
-from Constant import TEMP_DIR_NAME
-from projectinfo.ProjectInfo import GmsType, GoGmsType
+from constant import CONTAINER_MARGIN_TOP
+from constant import CONTAINER_MARGIN_LEFT
+from constant import CONTAINER_MARGIN_RIGHT
+from constant import CONTAINER_MARGIN_BOTTOM
+from constant import CHILD_MARGIN_TOP
+from constant import CHILD_MARGIN_LEFT
+from constant import CHILD_MARGIN_RIGHT
+from constant import CHILD_MARGIN_BOTTOM
+from constant import LABEL_FRAME_ORIGIN_HEIGHT
+from constant import TEMP_DIR_NAME
+from projectinfo.projectinfo import GmsType, GoGmsType
 
 
 class ProjectInfoViewController:

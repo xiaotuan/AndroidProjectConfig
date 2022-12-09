@@ -2,10 +2,11 @@ import os
 from tkinter import *
 from tkinter.ttk import *
 
-import Log
-import Constant
-from projectinfo.ProjectInfo import ProjectInfo
-from projectinfo.ProjectInfoView import ProjectInfoView
+import log
+import constant
+from projectinfo.projectinfo import ProjectInfo
+from projectinfo.projectinfoview import ProjectInfoView
+from version.versionview import VersionView
 
 class MainWindow:
     """
@@ -27,9 +28,9 @@ class MainWindow:
         self.initValues()
 
         # 创建临时目录
-        if not os.path.exists("./" + Constant.TEMP_DIR_NAME):
+        if not os.path.exists("./" + constant.TEMP_DIR_NAME):
             self.log.d(self.TAG, "init=>create temp directory.");
-            os.makedirs("./" + Constant.TEMP_DIR_NAME)
+            os.makedirs("./" + constant.TEMP_DIR_NAME)
 
         self.log.d(self.TAG, "init=>width: " + str(width) + ", height: " + str(height))
         self.width = width
@@ -42,7 +43,7 @@ class MainWindow:
         """
         初始化属性
         """
-        self.log = Log.Log(Log.DEBUG)
+        self.log = log.Log(log.DEBUG)
         self.projectInfo = ProjectInfo()
 
 
@@ -74,7 +75,12 @@ class MainWindow:
         self.projectInfoFrame = Frame(self.noteBook)
         self.projectInfoView = ProjectInfoView(self.projectInfoFrame, self.projectInfo, self.log)
 
+        # 版本号选项卡
+        self.versionFrame = Frame(self.noteBook)
+        self.versionView = VersionView(self.versionFrame, self.projectInfo, self.log)
+
         self.noteBook.add(self.projectInfoFrame, text="Android 工程信息")
+        self.noteBook.add(self.versionFrame, text="版本号")
 
 
     def bindEvents(self):
@@ -118,6 +124,7 @@ class MainWindow:
         """
         self.log.d(self.TAG, "onNoteBookTabChanged=>event: " + str(event))
         self.projectInfoView.updateViewInfo()
+        self.versionView.updateViewInfo();
 
 
     def updateChildSized(self):
@@ -128,6 +135,7 @@ class MainWindow:
         height = self.noteBook.winfo_height()
         self.log.d(self.TAG, "updateChildSized=>NoteBook width: " + str(width) + ", height: " + str(height))
         self.projectInfoView.onSizeChanged(width, height)
+        self.versionView.onSizeChanged(width, height)
 
 
 def main():
