@@ -19,7 +19,7 @@ class VersionView:
 
         self.initValues()
         self.initViews()
-        self.bindViewEvent()
+        self.bindViewsEvent()
 
 
     def initValues(self):
@@ -41,7 +41,7 @@ class VersionView:
         self.versionButton = Button(self.frame, text="设置", command=self.controller.setVersion)
 
 
-    def bindViewEvent(self):
+    def bindViewsEvent(self):
         """
         绑定控件事件
         """
@@ -62,4 +62,5 @@ class VersionView:
         更新控件信息
         """
         self.log.d(self.TAG, "updateViewInfo()...")
-        self.controller.updateViewsInfo()
+        if not self.info.isEmpty():
+            self.controller.updateViewsInfo()

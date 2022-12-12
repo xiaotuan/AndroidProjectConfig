@@ -7,6 +7,7 @@ import log
 import constant
 from projectinfo.projectinfo import ProjectInfo
 from projectinfo.projectinfoview import ProjectInfoView
+from system.systemview import SystemView
 from version.versionview import VersionView
 
 class MainWindow:
@@ -84,9 +85,14 @@ class MainWindow:
         self.fingerprintFrame = Frame(self.noteBook)
         self.fingerprintView = FingerprintView(self.fingerprintFrame, self.projectInfo, self.log)
 
+        # 系统选项卡
+        self.systemFrame = Frame(self.noteBook)
+        self.systemView = SystemView(self.systemFrame, self.projectInfo, self.log)
+
         self.noteBook.add(self.projectInfoFrame, text="Android 工程信息")
         self.noteBook.add(self.versionFrame, text="版本号")
         self.noteBook.add(self.fingerprintFrame, text="Fingerprint")
+        self.noteBook.add(self.systemFrame, text="系统")
 
 
     def bindEvents(self):
@@ -130,8 +136,9 @@ class MainWindow:
         """
         self.log.d(self.TAG, "onNoteBookTabChanged=>event: " + str(event))
         self.projectInfoView.updateViewInfo()
-        self.versionView.updateViewInfo();
-        self.fingerprintView.updateViewInfo();
+        self.versionView.updateViewInfo()
+        self.fingerprintView.updateViewInfo()
+        self.systemView.updateViewInfo()
 
 
     def updateChildSized(self):
@@ -144,6 +151,7 @@ class MainWindow:
         self.projectInfoView.onSizeChanged(width, height)
         self.versionView.onSizeChanged(width, height)
         self.fingerprintView.onSizeChanged(width, height)
+        self.systemView.onSizeChanged(width, height)
 
 
 def main():

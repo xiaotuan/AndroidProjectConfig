@@ -78,7 +78,8 @@ class Fingerprint:
             tempBoardConfigPath = TEMP_DIR_NAME + "/" + os.path.basename(customBoardConfigPath)
             shutil.copy(customBoardConfigPath, tempBoardConfigPath)
         else:
-            os.makedirs(os.path.dirname(customBoardConfigPath))
+            if not os.path.exists(os.path.dirname(customBoardConfigPath)):
+                os.makedirs(os.path.dirname(customBoardConfigPath))
             shutil.copy(originBoardConfigPath, customBoardConfigPath)
 
         try:

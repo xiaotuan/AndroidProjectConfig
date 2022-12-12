@@ -26,6 +26,13 @@ class ProjectInfo:
         self.publicName = ""
 
 
+    def isEmpty(self):
+        return len(self.projectDir.strip()) == 0 or len(self.driveDir.strip()) == 0\
+            or len(self.customDir.strip()) == 0 or len(self.chipMaker.strip()) == 0\
+            or len(self.chipMode.strip()) == 0 or len(self.androidVersion.strip()) == 0\
+            or len(self.taskNumber.strip()) == 0 or len(self.publicName.strip()) == 0
+
+
 class GmsType:
     """
     GMS 类型

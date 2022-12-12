@@ -62,4 +62,5 @@ class FingerprintView:
         更新控件信息
         """
         self.log.d(self.TAG, "updateViewInfo()...")
-        self.controller.updateViewsInfo()
+        if not self.info.isEmpty():
+            self.controller.updateViewsInfo()
