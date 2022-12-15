@@ -1,5 +1,5 @@
 import time
-from tkinter import messagebox
+from tkinter import DISABLED, NORMAL, messagebox
 from constant import CHILD_MARGIN_TOP, CONTAINER_MARGIN_LEFT, CONTAINER_MARGIN_RIGHT, CONTAINER_MARGIN_TOP, CHILD_MARGIN_RIGHT
 from constant import CHILD_MARGIN_LEFT
 
@@ -25,9 +25,18 @@ class FingerprintController:
         """
         更新视图信息
         """
-        self.view.fingerprintEntry.delete(0, 'end')
-        self.view.fingerprintEntry.insert(0, self.fingerprint.getFingerprint())
         self.view.fingerprintStateLabel.config(text="       ")
+        
+        if self.info.isEmpty():
+            self.view.fingerprintEntry.delete(0, 'end')
+            self.view.fingerprintEntry.insert(0, self.fingerprint.getFingerprint())
+            
+        if not self.info.isEmpty():
+            self.view.fingerprintButton.configure(state=NORMAL)
+            self.view.fingerprintRandomButton.configure(state=NORMAL)
+        else:
+            self.view.fingerprintButton.configure(state=DISABLED)
+            self.view.fingerprintRandomButton.configure(state=DISABLED)
 
 
     def fingerprintChanged(self, event):

@@ -1,4 +1,4 @@
-from tkinter import messagebox
+from tkinter import DISABLED, NORMAL, messagebox
 from constant import CHILD_MARGIN_TOP, CONTAINER_MARGIN_LEFT, CONTAINER_MARGIN_RIGHT, CONTAINER_MARGIN_TOP, CHILD_MARGIN_RIGHT
 from constant import CHILD_MARGIN_LEFT
 
@@ -24,9 +24,15 @@ class VersionController:
         """
         更新视图信息
         """
-        self.view.versionEntry.delete(0, 'end')
-        self.view.versionEntry.insert(0, self.version.getVersion())
         self.view.versionStateLabel.config(text="       ")
+        if self.info.isEmpty():
+            self.view.versionEntry.delete(0, 'end')
+            self.view.versionEntry.insert(0, self.version.getVersion())
+            
+        if not self.info.isEmpty():
+            self.view.versionButton.configure(state=NORMAL)
+        else:
+            self.view.versionButton.configure(state=DISABLED)
 
 
     def versionChanged(self, event):

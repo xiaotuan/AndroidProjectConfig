@@ -62,5 +62,4 @@ class VersionView:
         更新控件信息
         """
         self.log.d(self.TAG, "updateViewInfo()...")
-        if not self.info.isEmpty():
-            self.controller.updateViewsInfo()
+        self.controller.updateViewsInfo()

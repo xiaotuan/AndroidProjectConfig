@@ -1,4 +1,5 @@
 
+from tkinter import DISABLED, NORMAL
 from constant import CHILD_MARGIN_LEFT, CHILD_MARGIN_RIGHT, CHILD_MARGIN_TOP, CONTAINER_MARGIN_LEFT, CONTAINER_MARGIN_RIGHT, CONTAINER_MARGIN_TOP
 from system.system import System
 
@@ -22,33 +23,54 @@ class SystemController:
         """
         更新视图信息
         """
-        self.view.brandEntry.delete(0, 'end')
-        self.view.brandEntry.insert(0, self.system.getBrand())
         self.view.brandStateLabel.config(text="        ")
-
-        self.view.modeEntry.delete(0, 'end')
-        self.view.modeEntry.insert(0, self.system.getMode())
         self.view.modeStateLabel.config(text="        ")
-
-        self.view.nameEntry.delete(0, 'end')
-        self.view.nameEntry.insert(0, self.system.getName())
         self.view.nameStateLabel.config(text="        ")
-
-        self.view.deviceEntry.delete(0, 'end')
-        self.view.deviceEntry.insert(0, self.system.getDevice())
         self.view.deviceStateLabel.config(text="        ")
-
-        self.view.manufacturerEntry.delete(0, 'end')
-        self.view.manufacturerEntry.insert(0, self.system.getManufacturer())
         self.view.manufacturerStateLabel.config(text="        ")
-
-        self.view.languageEntry.delete(0, 'end')
-        self.view.languageEntry.insert(0, self.system.getLanguage())
         self.view.languageStateLabel.config(text="        ")
-
-        self.view.timezoneEntry.delete(0, 'end')
-        self.view.timezoneEntry.insert(0, self.system.getTimezone())
         self.view.timezoneStateLabel.config(text="        ")
+
+        if self.info.isEmpty():
+            self.view.brandEntry.delete(0, 'end')
+            self.view.brandEntry.insert(0, self.system.getBrand())
+
+            self.view.modeEntry.delete(0, 'end')
+            self.view.modeEntry.insert(0, self.system.getMode())
+
+            self.view.nameEntry.delete(0, 'end')
+            self.view.nameEntry.insert(0, self.system.getName())
+
+            self.view.deviceEntry.delete(0, 'end')
+            self.view.deviceEntry.insert(0, self.system.getDevice())
+
+            self.view.manufacturerEntry.delete(0, 'end')
+            self.view.manufacturerEntry.insert(0, self.system.getManufacturer())
+
+            self.view.languageEntry.delete(0, 'end')
+            self.view.languageEntry.insert(0, self.system.getLanguage())
+
+            self.view.timezoneEntry.delete(0, 'end')
+            self.view.timezoneEntry.insert(0, self.system.getTimezone())
+
+        if not self.info.isEmpty():
+            self.view.brandButton.configure(state=NORMAL)
+            self.view.modeButton.configure(state=NORMAL)
+            self.view.nameButton.configure(state=NORMAL)
+            self.view.deviceButton.configure(state=NORMAL)
+            self.view.manufacturerButton.configure(state=NORMAL)
+            self.view.languageButton.configure(state=NORMAL)
+            self.view.timezoneButton.configure(state=NORMAL)
+            self.view.allSetButton.configure(state=NORMAL)
+        else:
+            self.view.brandButton.configure(state=DISABLED)
+            self.view.modeButton.configure(state=DISABLED)
+            self.view.nameButton.configure(state=DISABLED)
+            self.view.deviceButton.configure(state=DISABLED)
+            self.view.manufacturerButton.configure(state=DISABLED)
+            self.view.languageButton.configure(state=DISABLED)
+            self.view.timezoneButton.configure(state=DISABLED)
+            self.view.allSetButton.configure(state=DISABLED)
 
 
     def setBrand(self):

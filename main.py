@@ -9,6 +9,7 @@ from projectinfo.projectinfo import ProjectInfo
 from projectinfo.projectinfoview import ProjectInfoView
 from system.systemview import SystemView
 from version.versionview import VersionView
+from tee.teeview import TeeView
 
 class MainWindow:
     """
@@ -89,10 +90,15 @@ class MainWindow:
         self.systemFrame = Frame(self.noteBook)
         self.systemView = SystemView(self.systemFrame, self.projectInfo, self.log)
 
+        # TEE 选项卡
+        self.teeFrame = Frame(self.noteBook)
+        self.teeView = TeeView(self.teeFrame, self.projectInfo, self.log)
+
         self.noteBook.add(self.projectInfoFrame, text="Android 工程信息")
         self.noteBook.add(self.versionFrame, text="版本号")
         self.noteBook.add(self.fingerprintFrame, text="Fingerprint")
         self.noteBook.add(self.systemFrame, text="系统")
+        self.noteBook.add(self.teeFrame, text="TEE")
 
 
     def bindEvents(self):
@@ -139,6 +145,7 @@ class MainWindow:
         self.versionView.updateViewInfo()
         self.fingerprintView.updateViewInfo()
         self.systemView.updateViewInfo()
+        self.teeView.updateViewInfo()
 
 
     def updateChildSized(self):
@@ -152,6 +159,7 @@ class MainWindow:
         self.versionView.onSizeChanged(width, height)
         self.fingerprintView.onSizeChanged(width, height)
         self.systemView.onSizeChanged(width, height)
+        self.teeView.onSizeChanged(width, height)
 
 
 def main():
