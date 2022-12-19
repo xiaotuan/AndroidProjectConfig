@@ -10,6 +10,7 @@ from projectinfo.projectinfoview import ProjectInfoView
 from system.systemview import SystemView
 from version.versionview import VersionView
 from tee.teeview import TeeView
+from logo.logoview import LogoView
 
 class MainWindow:
     """
@@ -94,11 +95,46 @@ class MainWindow:
         self.teeFrame = Frame(self.noteBook)
         self.teeView = TeeView(self.teeFrame, self.projectInfo, self.log)
 
+        # Logo 选项卡
+        self.logoFrame = Frame(self.noteBook)
+        self.logoView = LogoView(self.logoFrame, self.projectInfo, self.log)
+
+        # wifi 选项卡
+        self.wifiFrame = Frame(self.noteBook)
+
+
+        # 蓝牙选项卡
+        self.btFrame = Frame(self.noteBook)
+
+
+        # 内存
+        self.memoryFrame = Frame(self.noteBook)
+
+
+        # 送样软件
+        self.prototypeFrame = Frame(self.noteBook)
+
+
+        # 第三方应用
+        self.thridAppFrame = Frame(self.noteBook)
+
+
+        # 壁纸
+        self.wallpaperFrame = Frame(self.noteBook)
+
+
         self.noteBook.add(self.projectInfoFrame, text="Android 工程信息")
         self.noteBook.add(self.versionFrame, text="版本号")
         self.noteBook.add(self.fingerprintFrame, text="Fingerprint")
         self.noteBook.add(self.systemFrame, text="系统")
         self.noteBook.add(self.teeFrame, text="TEE")
+        self.noteBook.add(self.logoFrame, text="Logo")
+        self.noteBook.add(self.wifiFrame, text="WiFi")
+        self.noteBook.add(self.btFrame, text="蓝牙")
+        self.noteBook.add(self.memoryFrame, text="内存")
+        self.noteBook.add(self.prototypeFrame, text="送样软件")
+        self.noteBook.add(self.thridAppFrame, text="第三方应用")
+        self.noteBook.add(self.wallpaperFrame, text="壁纸")
 
 
     def bindEvents(self):
@@ -146,6 +182,7 @@ class MainWindow:
         self.fingerprintView.updateViewInfo()
         self.systemView.updateViewInfo()
         self.teeView.updateViewInfo()
+        self.logoView.updateViewInfo()
 
 
     def updateChildSized(self):
@@ -160,6 +197,7 @@ class MainWindow:
         self.fingerprintView.onSizeChanged(width, height)
         self.systemView.onSizeChanged(width, height)
         self.teeView.onSizeChanged(width, height)
+        self.logoView.onSizeChanged(width, height)
 
 
 def main():
