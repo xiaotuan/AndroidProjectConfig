@@ -40,7 +40,6 @@ class Hotspot:
                         self.log.d(self.TAG, "getHotspotName=>line: " + line)
                         name = line.strip()[len('configBuilder.setSsid("'):len(line)]
                         name = name[0:(len(name) - len('");'))]
-                        break
                     elif line.strip().startswith('private SoftApConfiguration getDefaultApConfiguration() {'):
                         isInFunction = True
                         count += 1

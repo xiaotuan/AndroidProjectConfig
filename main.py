@@ -1,6 +1,7 @@
 import os
 from tkinter import *
 from tkinter.ttk import *
+from bt.btview import BtView
 from fingerprint.fingerprintview import FingerprintView
 
 import log
@@ -107,6 +108,7 @@ class MainWindow:
 
         # 蓝牙选项卡
         self.btFrame = Frame(self.noteBook)
+        self.btView = BtView(self.btFrame, self.projectInfo, self.log)
 
 
         # 内存
@@ -186,6 +188,7 @@ class MainWindow:
         self.teeView.updateViewInfo()
         self.logoView.updateViewInfo()
         self.wifiView.updateViewInfo()
+        self.btView.updateViewInfo()
 
 
     def updateChildSized(self):
@@ -202,6 +205,7 @@ class MainWindow:
         self.teeView.onSizeChanged(width, height)
         self.logoView.onSizeChanged(width, height)
         self.wifiView.onSizeChanged(width, height)
+        self.btView.onSizeChanged(width, height)
 
 
 def main():

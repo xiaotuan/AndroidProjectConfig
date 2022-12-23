@@ -5,18 +5,17 @@ import shutil
 
 from constant import TEMP_DIR_NAME
 
-
-class WifiStatus:
+class BtStatus:
     """
-    WiFi 状态管理类
+    设置蓝牙状态类
 
-    默认修改方法：
+    默认处理方法：
         修改 vendor/mediatek/proprietary/packages/apps/SettingsProvider/res/values/defaults.xml 文件中的如下代码：
-            <bool name="def_wifi_on">false</bool>
+            <bool name="def_bluetooth_on">false</bool>
     """
 
 
-    TAG = "WifiStatus"
+    TAG = "BtStatus"
 
 
     def __init__(self, info, log):
@@ -24,9 +23,9 @@ class WifiStatus:
         self.info = info
 
 
-    def getWifiStatus(self):
+    def getBluetoothStatus(self):
         """
-        获取当前 WiFi 状态
+        获取蓝牙状态
         """
         result = False
         originDefaultPath = self.info.projectDir + "/vendor/mediatek/proprietary/packages/apps/SettingsProvider/res/values/defaults.xml"
@@ -35,31 +34,32 @@ class WifiStatus:
             with open(customDefaultPath, mode='r', newline='\n', encoding='utf-8') as file:
                 content = file.readlines()
                 for line in content:
-                    if line.startswith('    <bool name="def_wifi_on">'):
-                        value = line[len('    <bool name="def_wifi_on">'):len(line)].strip()
+                    if line.strip().startswith('<bool name="def_bluetooth_on">'):
+                        value = line.strip()[len('<bool name="def_bluetooth_on">'):len(line)].strip()
                         value = value[0:(len(value) - len('</bool>'))]
-                        self.log.d(self.TAG, "getWifiStatus=>value: " + value)
+                        self.log.d(self.TAG, "getBluetoothStatus=>value: " + value)
                         result = value == "true"
         else:
             with open(originDefaultPath, mode='r', newline='\n', encoding='utf-8') as file:
                 content = file.readlines()
                 for line in content:
-                    if line.startswith('    <bool name="def_wifi_on">'):
-                        value = line[len('    <bool name="def_wifi_on">'):len(line)].strip()
+                    if line.strip().startswith('<bool name="def_bluetooth_on">'):
+                        value = line.strip()[len('<bool name="def_bluetooth_on">'):len(line)].strip()
                         value = value[0:(len(value) - len('</bool>'))]
-                        self.log.d(self.TAG, "getWifiStatus=>value: " + value)
+                        self.log.d(self.TAG, "getBluetoothStatus=>value: " + value)
                         result = value == "true"
-        self.log.d(self.TAG, "getWifiStatus=>status: " + str(result))
+        self.log.d(self.TAG, "getBluetoothStatus=>status: " + str(result))
         return result
 
 
-    def setWifiStatus(self, enabled):
+    def setBluetoothStatus(self, enabled):
         """
-        设置 WiFi 状态
+        设置蓝牙状态
 
-        Parameter:
-            enabled - True: 默认打开 WiFi, False: 默认关闭 WiFi
+        Parameters:
+            enabled - True - 蓝牙默认打开，False - 蓝牙默认关闭
         """
+        self.log.d(self.TAG, "setBluetoothStatus=>enabled: " + str(enabled))
         result = False
         hasCustomFile = False
         tempDefaultPath = None
@@ -81,16 +81,16 @@ class WifiStatus:
             if content is not None:
                 with open(customDefaultPath, mode='w+', newline='\n', encoding='utf-8') as file:
                     for line in content:
-                        if line.startswith('    <bool name="def_wifi_on">'):
+                        if line.strip().startswith('<bool name="def_bluetooth_on">'):
                             if enabled:
-                                file.write('    <bool name="def_wifi_on">true</bool>\n')
+                                file.write('    <bool name="def_bluetooth_on">true</bool>\n')
                             else:
-                                file.write('    <bool name="def_wifi_on">false</bool>\n')
+                                file.write('    <bool name="def_bluetooth_on">false</bool>\n')
                         else:
                             file.write(line)
                 result = True
         except:
-            self.log.e(self.TAG, "setWifiStatus=>error: " + traceback.format_exc())
+            self.log.e(self.TAG, "setBluetoothStatus=>error: " + traceback.format_exc())
             if hasCustomFile:
                 if os.path.exists(tempDefaultPath):
                     shutil.copy(tempDefaultPath, customDefaultPath)
