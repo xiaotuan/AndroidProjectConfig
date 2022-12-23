@@ -11,6 +11,7 @@ from system.systemview import SystemView
 from version.versionview import VersionView
 from tee.teeview import TeeView
 from logo.logoview import LogoView
+from wifi.wifiview import WifiView
 
 class MainWindow:
     """
@@ -101,6 +102,7 @@ class MainWindow:
 
         # wifi 选项卡
         self.wifiFrame = Frame(self.noteBook)
+        self.wifiView = WifiView(self.wifiFrame, self.projectInfo, self.log)
 
 
         # 蓝牙选项卡
@@ -183,6 +185,7 @@ class MainWindow:
         self.systemView.updateViewInfo()
         self.teeView.updateViewInfo()
         self.logoView.updateViewInfo()
+        self.wifiView.updateViewInfo()
 
 
     def updateChildSized(self):
@@ -198,6 +201,7 @@ class MainWindow:
         self.systemView.onSizeChanged(width, height)
         self.teeView.onSizeChanged(width, height)
         self.logoView.onSizeChanged(width, height)
+        self.wifiView.onSizeChanged(width, height)
 
 
 def main():

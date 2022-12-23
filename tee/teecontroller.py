@@ -192,6 +192,5 @@ class TeeController:
             width=last_x - x)
 
         # 按钮
-        # 按钮
         y += self.view.certSetButton.winfo_height() + CHILD_MARGIN_TOP * 4
         self.view.allSetButton.place(x=(max_width - self.view.allSetButton.winfo_width()) / 2, y=y)
