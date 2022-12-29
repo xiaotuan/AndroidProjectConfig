@@ -6,6 +6,7 @@ from fingerprint.fingerprintview import FingerprintView
 
 import log
 import constant
+from memory.memoryView import MemoryView
 from projectinfo.projectinfo import ProjectInfo
 from projectinfo.projectinfoview import ProjectInfoView
 from system.systemview import SystemView
@@ -113,7 +114,7 @@ class MainWindow:
 
         # 内存
         self.memoryFrame = Frame(self.noteBook)
-
+        self.memoryView = MemoryView(self.memoryFrame, self.projectInfo, self.log)
 
         # 送样软件
         self.prototypeFrame = Frame(self.noteBook)
@@ -189,6 +190,7 @@ class MainWindow:
         self.logoView.updateViewInfo()
         self.wifiView.updateViewInfo()
         self.btView.updateViewInfo()
+        self.memoryView.updateViewsInfo()
 
 
     def updateChildSized(self):
@@ -206,6 +208,7 @@ class MainWindow:
         self.logoView.onSizeChanged(width, height)
         self.wifiView.onSizeChanged(width, height)
         self.btView.onSizeChanged(width, height)
+        self.memoryView.onSizeChanged(width, height)
 
 
 def main():
