@@ -14,6 +14,7 @@ from version.versionview import VersionView
 from tee.teeview import TeeView
 from logo.logoview import LogoView
 from wifi.wifiview import WifiView
+from sample.sampleview import SampleView
 
 class MainWindow:
     """
@@ -117,8 +118,8 @@ class MainWindow:
         self.memoryView = MemoryView(self.memoryFrame, self.projectInfo, self.log)
 
         # 送样软件
-        self.prototypeFrame = Frame(self.noteBook)
-
+        self.sampleFrame = Frame(self.noteBook)
+        self.sampleView = SampleView(self.sampleFrame, self.projectInfo, self.log)
 
         # 第三方应用
         self.thridAppFrame = Frame(self.noteBook)
@@ -137,7 +138,7 @@ class MainWindow:
         self.noteBook.add(self.wifiFrame, text="WiFi")
         self.noteBook.add(self.btFrame, text="蓝牙")
         self.noteBook.add(self.memoryFrame, text="内存")
-        self.noteBook.add(self.prototypeFrame, text="送样软件")
+        self.noteBook.add(self.sampleFrame, text="送样软件")
         self.noteBook.add(self.thridAppFrame, text="第三方应用")
         self.noteBook.add(self.wallpaperFrame, text="壁纸")
 
@@ -191,6 +192,7 @@ class MainWindow:
         self.wifiView.updateViewInfo()
         self.btView.updateViewInfo()
         self.memoryView.updateViewsInfo()
+        self.sampleView.updateViewInfo()
 
 
     def updateChildSized(self):
@@ -209,6 +211,7 @@ class MainWindow:
         self.wifiView.onSizeChanged(width, height)
         self.btView.onSizeChanged(width, height)
         self.memoryView.onSizeChanged(width, height)
+        self.sampleView.onSizeChanged(width, height)
 
 
 def main():
